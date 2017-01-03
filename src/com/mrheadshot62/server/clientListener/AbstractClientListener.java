@@ -1,0 +1,56 @@
+package com.mrheadshot62.server.clientListener;
+
+import com.mrheadshot62.api.streams.BlueBearInputStream;
+import com.mrheadshot62.api.types.Command;
+import com.mrheadshot62.api.types.Image;
+import com.mrheadshot62.api.types.Packet;
+import com.mrheadshot62.api.types.Types;
+import com.mrheadshot62.server.Client;
+
+
+abstract class AbstractClientListener extends Thread{
+    protected Client client;
+    private BlueBearInputStream input;
+
+    AbstractClientListener(Client client) {
+        this.client = client;
+        this.input = client.getInput();
+    }
+
+    @Override
+    public void run() {
+        while (input != null){
+            try {
+                Object o = input.readObject();
+                if (!(o instanceof Packet)) throw new ClassNotFoundException("Input object is not Packet");
+                Packet packet = (Packet)o;
+                onReceivePacket(packet);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+
+
+    protected void onReceivePacket(Packet p){
+        try {
+            switch (p.getType()) {
+                case Types.Image:
+                    onReceiveImage((Image) p.getData());
+                    break;
+                case Types.Command:
+                    onReceiveCommand((Command) p.getData());
+                    break;
+                default:
+                    throw new ClassNotFoundException("Invalid data type");
+            }
+        }catch (ClassNotFoundException e){
+            e.printStackTrace();
+        }
+    }
+
+    protected abstract void onReceiveImage(Image image);
+    protected abstract void onReceiveCommand(Command command);
+    protected abstract void onClientDisconnected(Client client);
+}
