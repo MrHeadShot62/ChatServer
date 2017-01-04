@@ -16,15 +16,6 @@ public class ServerListener extends AbstractServerListener {
         super(storage);
     }
 
-    public void sendImage(ImagePacket image){
-        if (image==null){
-            System.out.println("Null image");
-            return;
-        }
-        for (Client c:storage.getClients()){
-            sendImage(image, c.getId());
-        }
-    }
 
     public void sendPacket(Packet... packets){
         boolean valid=false;

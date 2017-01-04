@@ -56,7 +56,7 @@ abstract class AbstractServerListener extends Thread{
             @Override
             public void run() {
                 try {
-                    storage.getClient(id).getOutput().writePacket(p);
+                    storage.getClient(id).getOutput().writeMultiPacket(p);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

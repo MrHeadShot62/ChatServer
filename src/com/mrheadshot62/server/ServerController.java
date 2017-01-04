@@ -41,12 +41,4 @@ public class ServerController {
     public boolean isStarted() {
         return isStarted;
     }
-
-    public void sendImage(ImagePacket image){
-        serverListener.sendImage(image);
-    }
-
-    public void sendImage(ImagePacket image, int id){
-        serverListener.sendImage(image, id);
-    }
 }

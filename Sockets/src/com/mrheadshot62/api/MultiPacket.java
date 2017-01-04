@@ -11,10 +11,10 @@ public class MultiPacket implements Serializable{
     private Packet[] packets;
 
     public MultiPacket(Packet... packets) {
-        for (Packet p:packets){
-            if (p.get)
-        }
         this.packets = packets;
     }
 
+    public Packet[] getPackets() {
+        return packets;
+    }
 }
