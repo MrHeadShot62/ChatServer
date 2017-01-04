@@ -15,7 +15,7 @@ import java.net.Socket;
 public class Client {
     private BlueBearInputStream input;
     private BlueBearOutputStream output;
-    private InetAddress inetAddress;
+    private String ip;
     private int id;
     private User user;
 
@@ -23,7 +23,7 @@ public class Client {
         try {
             this.input = new BlueBearInputStream(socket.getInputStream());
             this.output = new BlueBearOutputStream(socket.getOutputStream());
-            this.inetAddress = socket.getInetAddress();
+            this.ip = socket.getInetAddress().getHostAddress();
             this.id = storage.getClients().size();
         } catch (IOException e) {
             e.printStackTrace();
@@ -38,8 +38,8 @@ public class Client {
         return output;
     }
 
-    public InetAddress getInetAddress() {
-        return inetAddress;
+    public String getIp() {
+        return ip;
     }
 
     public int getId() {
