@@ -1,5 +1,7 @@
 package com.mrheadshot62.server.clientListener;
 
+import com.mrheadshot62.api.Packet;
+import com.mrheadshot62.api.Types;
 import com.mrheadshot62.api.streams.BlueBearInputStream;
 import com.mrheadshot62.api.types.*;
 import com.mrheadshot62.server.Client;
@@ -40,13 +42,13 @@ abstract class AbstractClientListener extends Thread{
         try {
             switch (p.getType()) {
                 case Types.Image:
-                    onReceiveImage((Image) p.getData());
+                    onReceiveImage((ImagePacket) p.getData());
                     break;
                 case Types.Command:
-                    onReceiveCommand((Command) p.getData());
+                    onReceiveCommand((CommandPacket) p.getData());
                     break;
                 case Types.USER:
-                    onReceivedUser((User) p.getData());
+                    onReceivedUser((UserPacket) p.getData());
                 default:
                     throw new ClassNotFoundException("Invalid data type");
             }
@@ -55,8 +57,8 @@ abstract class AbstractClientListener extends Thread{
         }
     }
 
-    protected abstract void onReceiveImage(Image image);
-    protected abstract void onReceiveCommand(Command command);
-    protected abstract void onReceivedUser(User user);
+    protected abstract void onReceiveImage(ImagePacket image);
+    protected abstract void onReceiveCommand(CommandPacket command);
+    protected abstract void onReceivedUser(UserPacket user);
     protected abstract void onClientDisconnected(Client client);
 }

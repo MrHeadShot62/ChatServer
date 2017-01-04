@@ -1,6 +1,5 @@
 package com.mrheadshot62.server.storage;
 
-import com.mrheadshot62.api.types.User;
 import com.mrheadshot62.server.Client;
 import com.mrheadshot62.server.ServerUser;
 

@@ -1,8 +1,9 @@
 package com.mrheadshot62.server.serverListener;
 
-import com.mrheadshot62.api.types.Image;
-import com.mrheadshot62.api.types.Packet;
-import com.mrheadshot62.api.types.Types;
+import com.mrheadshot62.api.MultiPacket;
+import com.mrheadshot62.api.types.ImagePacket;
+import com.mrheadshot62.api.Packet;
+import com.mrheadshot62.api.Types;
 import com.mrheadshot62.server.Client;
 import com.mrheadshot62.server.ServerController;
 import com.mrheadshot62.server.clientListener.ClientListener;
@@ -50,7 +51,7 @@ abstract class AbstractServerListener extends Thread{
         }
     }
 
-    private void sendPacket(Packet p, int id){
+    private void sendMultiPacket(MultiPacket p, int id){
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -62,10 +63,6 @@ abstract class AbstractServerListener extends Thread{
             }
         }).start();
 
-    }
-
-    public void sendImage(Image image, int id){
-        sendPacket(new Packet(image, Types.Image), id);
     }
 
 

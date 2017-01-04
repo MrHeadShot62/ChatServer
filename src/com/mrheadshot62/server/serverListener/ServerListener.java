@@ -1,11 +1,12 @@
 package com.mrheadshot62.server.serverListener;
 
-import com.mrheadshot62.api.types.Image;
+import com.mrheadshot62.api.MultiPacket;
+import com.mrheadshot62.api.Packet;
+import com.mrheadshot62.api.Types;
+import com.mrheadshot62.api.types.ImagePacket;
 import com.mrheadshot62.server.Client;
 import com.mrheadshot62.server.clientListener.ClientListener;
 import com.mrheadshot62.server.storage.ServerStorage;
-
-import java.io.IOException;
 
 /**
  * Created by novak on 04.01.2017.
@@ -15,7 +16,7 @@ public class ServerListener extends AbstractServerListener {
         super(storage);
     }
 
-    public void sendImage(Image image){
+    public void sendImage(ImagePacket image){
         if (image==null){
             System.out.println("Null image");
             return;
@@ -25,7 +26,15 @@ public class ServerListener extends AbstractServerListener {
         }
     }
 
+    public void sendPacket(Packet... packets){
+        boolean valid=false;
+        for (Packet p:packets){
+            if (p.getType() == Types.PERMISSION) valid=true;
+        }
+        if (!valid) return;
+        MultiPacket multiPacket = new MultiPacket(packets);
 
+    }
 
     @Override
     protected void onListenerAttached(ClientListener clientListener) {

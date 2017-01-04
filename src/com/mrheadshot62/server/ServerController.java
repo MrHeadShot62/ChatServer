@@ -1,7 +1,7 @@
 package com.mrheadshot62.server;
 
 
-import com.mrheadshot62.api.types.Image;
+import com.mrheadshot62.api.types.ImagePacket;
 import com.mrheadshot62.server.serverListener.ServerListener;
 import com.mrheadshot62.server.storage.ServerStorage;
 
@@ -28,7 +28,6 @@ public class ServerController {
             }
         };
     }
-
     public void startServer() {
         if (isStarted)System.out.println("Server already started");
         this.serverListener.start();
@@ -43,11 +42,11 @@ public class ServerController {
         return isStarted;
     }
 
-    public void sendImage(Image image){
+    public void sendImage(ImagePacket image){
         serverListener.sendImage(image);
     }
 
-    public void sendImage(Image image, int id){
+    public void sendImage(ImagePacket image, int id){
         serverListener.sendImage(image, id);
     }
 }

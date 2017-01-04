@@ -1,6 +1,7 @@
 package com.mrheadshot62.api.streams;
 
-import com.mrheadshot62.api.types.Packet;
+import com.mrheadshot62.api.MultiPacket;
+import com.mrheadshot62.api.Packet;
 import com.sun.istack.internal.Nullable;
 
 import java.io.IOException;
@@ -16,7 +17,7 @@ public class BlueBearInputStream extends ObjectInputStream implements BlueBearSt
     }
 
     @Nullable
-    public Packet readPacket() throws IOException{
+    public MultiPacket readMultiPacket() throws IOException{
         Object o;
         try {
             o = readObject();
@@ -24,8 +25,8 @@ public class BlueBearInputStream extends ObjectInputStream implements BlueBearSt
             e.printStackTrace();
             return null;
         }
-        if (o instanceof Packet) {
-            return (Packet) o;
+        if (o instanceof MultiPacket) {
+            return (MultiPacket) o;
         } else {
             return null;
         }

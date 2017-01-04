@@ -1,19 +1,19 @@
 package com.mrheadshot62.server;
 
-import com.mrheadshot62.api.types.User;
+import com.mrheadshot62.api.types.UserPacket;
 
 /**
  * Created by novak on 04.01.2017.
  */
 public class ServerUser {
-    private User user;
+    private UserPacket user;
     private int id;
 
-    public ServerUser(User user, int id) {
+    public ServerUser(UserPacket user, int id) {
         this.user = user;
     }
 
-    public User getUser() {
+    public UserPacket getUser() {
         return user;
     }
 

@@ -5,10 +5,10 @@ import java.io.Serializable;
 /**
  * Created by novak on 04.01.2017.
  */
-public class User implements Serializable {
+public class UserPacket implements Serializable {
     private String name;
 
-    public User(String name, int id) {
+    public UserPacket(String name) {
         this.name = name;
     }
 

@@ -1,4 +1,4 @@
-package com.mrheadshot62.api.types;
+package com.mrheadshot62.api;
 
 import java.io.Serializable;
 

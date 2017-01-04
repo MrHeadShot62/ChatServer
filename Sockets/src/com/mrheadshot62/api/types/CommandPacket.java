@@ -5,11 +5,11 @@ import java.io.Serializable;
 /**
  * Created by novak on 04.01.2017.
  */
-public class Command implements Serializable {
-    private int command;
-    private Object[] arg;
+public class CommandPacket implements Serializable {
+    private final int command;
+    private final Object[] arg;
 
-    public Command(int command, Object... arg) {
+    public CommandPacket(int command, Object... arg) {
         this.command = command;
         this.arg = arg;
     }

@@ -2,7 +2,7 @@ package com.mrheadshot62.server;
 
 import com.mrheadshot62.api.streams.BlueBearInputStream;
 import com.mrheadshot62.api.streams.BlueBearOutputStream;
-import com.mrheadshot62.api.types.User;
+import com.mrheadshot62.api.types.UserPacket;
 import com.mrheadshot62.server.storage.ServerStorage;
 
 import java.io.IOException;
@@ -17,7 +17,7 @@ public class Client {
     private BlueBearOutputStream output;
     private InetAddress inetAddress;
     private int id;
-    private User user;
+    private UserPacket user;
 
     public Client(Socket socket, ServerStorage storage){
         try {
@@ -46,11 +46,11 @@ public class Client {
         return id;
     }
 
-    public void setUser(User user) {
+    public void setUser(UserPacket user) {
         this.user = user;
     }
 
-    public User getUser() {
+    public UserPacket getUser() {
         return user;
     }
 }
