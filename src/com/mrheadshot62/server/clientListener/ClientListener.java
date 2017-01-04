@@ -3,6 +3,7 @@ package com.mrheadshot62.server.clientListener;
 import com.mrheadshot62.api.types.Command;
 import com.mrheadshot62.api.types.Image;
 import com.mrheadshot62.api.types.Packet;
+import com.mrheadshot62.api.types.User;
 import com.mrheadshot62.server.Client;
 
 /**
@@ -26,6 +27,11 @@ public class ClientListener extends AbstractClientListener{
 
     @Override
     protected void onReceiveCommand(Command command) {
+
+    }
+
+    @Override
+    protected void onReceivedUser(User user) {
 
     }
 

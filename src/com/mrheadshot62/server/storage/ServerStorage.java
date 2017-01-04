@@ -29,6 +29,7 @@ public class ServerStorage {
     }
 
 
+
     @Nullable
     public ServerUser findServerUserById(int id){
         for (ServerUser u:dataBase.getServerUsers()){
@@ -39,7 +40,17 @@ public class ServerStorage {
         return null;
     }
 
-    public int createUser(User user){
+    @Nullable
+    public ServerUser findServerUserByUser(User user){
+        for (ServerUser u:dataBase.getServerUsers()){
+            if (u.getUser().equals(user)){
+                return u;
+            }
+        }
+        return null;
+    }
+
+    public int createServerUser(User user){
         ServerUser serverUser = new ServerUser(user, dataBase.getServerUsers().size()+100);
         dataBase.getServerUsers().add(serverUser);
         return serverUser.getId();

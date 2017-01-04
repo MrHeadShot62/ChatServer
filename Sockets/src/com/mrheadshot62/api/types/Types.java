@@ -7,4 +7,5 @@ public class Types {
     public static final int Message = 994;
     public static final int Image = 715;
     public static final int Command = 939;
+    public static final int USER = 338;
 }
