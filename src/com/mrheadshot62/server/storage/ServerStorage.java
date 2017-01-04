@@ -1,6 +1,9 @@
 package com.mrheadshot62.server.storage;
 
+import com.mrheadshot62.api.types.User;
 import com.mrheadshot62.server.Client;
+import com.mrheadshot62.server.ServerUser;
+import com.sun.istack.internal.Nullable;
 
 import java.util.ArrayList;
 
@@ -23,5 +26,22 @@ public class ServerStorage {
 
     public Client getClient(int id){
         return dataBase.getClients().get(id);
+    }
+
+
+    @Nullable
+    public ServerUser findServerUserById(int id){
+        for (ServerUser u:dataBase.getServerUsers()){
+            if (u.getId() == id){
+                return u;
+            }
+        }
+        return null;
+    }
+
+    public int createUser(User user){
+        ServerUser serverUser = new ServerUser(user, dataBase.getServerUsers().size()+100);
+        dataBase.getServerUsers().add(serverUser);
+        return serverUser.getId();
     }
 }

@@ -1,6 +1,8 @@
 package com.mrheadshot62.server.storage;
 
+import com.mrheadshot62.api.types.User;
 import com.mrheadshot62.server.Client;
+import com.mrheadshot62.server.ServerUser;
 
 import java.util.ArrayList;
 
@@ -9,8 +11,12 @@ import java.util.ArrayList;
  */
 class DataBase {
     private ArrayList<Client> clients;
-
+    private ArrayList<ServerUser> serverUsers;
     ArrayList<Client> getClients() {
         return clients;
+    }
+
+    public ArrayList<ServerUser> getServerUsers() {
+        return serverUsers;
     }
 }

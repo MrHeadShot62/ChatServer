@@ -18,6 +18,12 @@ abstract class AbstractClientListener extends Thread{
     }
 
     @Override
+    public synchronized void start() {
+        super.start();
+        System.out.println("Started client listener #"+client.getId());
+    }
+
+    @Override
     public void run() {
         while (input != null){
             try {

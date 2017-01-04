@@ -12,25 +12,22 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-/**
- * Created by novak on 04.01.2017.
- */
 abstract class AbstractServerListener extends Thread{
-    private ServerStorage storage;
+    protected ServerStorage storage;
 
-    public AbstractServerListener(ServerStorage storage){
+    AbstractServerListener(ServerStorage storage){
         this.storage = storage;
     }
 
     @Override
     public void run() {
         try {
-            onThreadStarted();
+            onServerStarted();
             ServerSocket serverSocket = new ServerSocket(ServerController.PORT);
             while (!serverSocket.isClosed()){
                 try {
                     Socket socket = serverSocket.accept();
-                    Client client = new Client(socket);
+                    Client client = new Client(socket, storage);
                     onClientConnected(client);
                     storage.addClient(client);
                     ClientListener lisener = new ClientListener(client);
@@ -49,14 +46,25 @@ abstract class AbstractServerListener extends Thread{
             }
         } catch (Exception ex) {
             ex.printStackTrace();
+            onServerStopped();
         }
     }
 
-    private void sendPacket(Packet p, int id) throws IOException {
-        storage.getClient(id).getOutput().writePacket(p);
+    private void sendPacket(Packet p, int id){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    storage.getClient(id).getOutput().writePacket(p);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+
     }
 
-    public void sendImage(Image image, int id) throws IOException{
+    public void sendImage(Image image, int id){
         sendPacket(new Packet(image, Types.Image), id);
     }
 
@@ -66,7 +74,11 @@ abstract class AbstractServerListener extends Thread{
 
     }
 
-    protected void onThreadStarted(){
+    protected void onServerStarted(){
+
+    }
+
+    protected void onServerStopped(){
 
     }
 
