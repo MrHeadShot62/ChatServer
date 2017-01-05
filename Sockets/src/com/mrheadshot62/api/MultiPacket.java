@@ -1,7 +1,5 @@
 package com.mrheadshot62.api;
 
-import com.mrheadshot62.api.iLogic.IPacket;
-
 import java.io.Serializable;
 
 /**

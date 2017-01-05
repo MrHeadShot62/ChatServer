@@ -11,6 +11,15 @@ import java.util.ArrayList;
  */
 class DataBase {
     private ArrayList<Client> clients;
+    private ArrayList<ServerUser> serverUsers;
+    ArrayList<Client> getClients() {
+        return clients;
+    }
+
+    public ArrayList<ServerUser> getServerUsers() {
+        return serverUsers;
+    }
+    ////////////////////////////////////////////////////////////////////
 
     private static final String url = "jdbc:mysql://localhost:3306/BlueBear";
     private static final String user = "root";
