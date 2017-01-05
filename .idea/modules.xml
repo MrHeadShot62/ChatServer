@@ -2,8 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/ChatServer228.iml" filepath="$PROJECT_DIR$/.idea/ChatServer228.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ChatServer.iml" filepath="$PROJECT_DIR$/ChatServer.iml" />
       <module fileurl="file://$PROJECT_DIR$/Sockets/Sockets.iml" filepath="$PROJECT_DIR$/Sockets/Sockets.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Sockets/Sockets1.iml" filepath="$PROJECT_DIR$/Sockets/Sockets1.iml" />
     </modules>
   </component>
 </project>
