@@ -1,18 +1,17 @@
 package com.mrheadshot62.api.types;
 
-
-import com.mrheadshot62.api.PermissionLevel;
+import java.io.Serializable;
 
 /**
  * Created by DmitriyRoot on 04.01.2017.
  */
-public class PermissionPacket {
+public class PermissionPacket implements Serializable{
 
     private final String sessionKey;
 
-    private final PermissionLevel permissionLevel;
+    private final int permissionLevel;
 
-    public PermissionPacket(String sessionKey, PermissionLevel permissionLevel) {
+    public PermissionPacket(String sessionKey, int permissionLevel) {
         this.sessionKey = sessionKey;
         this.permissionLevel = permissionLevel;
     }
@@ -21,7 +20,7 @@ public class PermissionPacket {
         return sessionKey;
     }
 
-    public PermissionLevel getPermissionLevel() {
+    public int getPermissionLevel() {
         return permissionLevel;
     }
 }

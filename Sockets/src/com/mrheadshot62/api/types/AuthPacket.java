@@ -8,7 +8,7 @@ import java.io.Serializable;
 /**
  * Created by DmitriyRoot on 04.01.2017.
  */
-public class AuthPacket implements IPacket, Serializable {
+public class AuthPacket implements Serializable {
     private final String login;
     private final String pass;
 
