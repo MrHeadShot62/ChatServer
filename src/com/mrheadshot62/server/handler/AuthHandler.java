@@ -1,13 +1,13 @@
 package com.mrheadshot62.server.handler;
 
-import com.mrheadshot62.api.Packet;
-import com.mrheadshot62.api.iLogic.IPacketHandler;
-/**
- * Created by DmitriyRoot on 04.01.2017.
- */
-public class AuthHandler implements IPacketHandler{
+
+import com.mrheadshot62.api.types.AuthPacket;
+import com.mrheadshot62.server.handler.abstracts.AAuthHandler;
+
+class AuthHandler extends AAuthHandler{
+
     @Override
-    public boolean validPacket(Packet p) {
-        return false;
+    protected void handleAuthPacket(AuthPacket packet) {
+
     }
 }
