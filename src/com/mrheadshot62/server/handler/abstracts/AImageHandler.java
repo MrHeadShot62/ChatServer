@@ -8,15 +8,13 @@ import com.mrheadshot62.api.types.ImagePacket;
  * Created by novak on 05.01.2017.
  */
 public abstract class AImageHandler implements IPacketImageHandler{
-    @Override
-    public void handlePacket(Packet p) {
-        try{
-            ImagePacket imagePacket = (ImagePacket)p.getData();
-            handleImagePacket(imagePacket);
-        }catch (Exception e){
+    public AImageHandler(ImagePacket p) {
+        try {
+            handleImagePacket(p);
+        }catch(Exception e){
             e.printStackTrace();
         }
     }
 
-    protected abstract void handleImagePacket(ImagePacket imagePacket);
+    protected abstract void handleImagePacket(ImagePacket imagePacket) throws Exception;
 }

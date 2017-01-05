@@ -1,5 +1,7 @@
 package com.mrheadshot62.server.clientListener;
 
+import com.mrheadshot62.api.MultiPacket;
+import com.mrheadshot62.api.types.AuthPacket;
 import com.mrheadshot62.api.types.CommandPacket;
 import com.mrheadshot62.api.types.ImagePacket;
 import com.mrheadshot62.api.Packet;
@@ -16,22 +18,27 @@ public class ClientListener extends AbstractClientListener{
     }
 
     @Override
-    protected void onReceivePacket(Packet p) {
-        super.onReceivePacket(p);
+    protected void onReceiveMultiPacket(MultiPacket p) {
+        super.onReceiveMultiPacket(p);
     }
 
     @Override
-    protected void onReceiveImage(ImagePacket image) {
-
-    }
-
-    @Override
-    protected void onReceiveCommand(CommandPacket command) {
+    protected void onReceiveImagePacket(ImagePacket image) {
 
     }
 
     @Override
-    protected void onReceivedUser(UserPacket user) {
+    protected void onReceiveAuthPacket(AuthPacket auth) {
+
+    }
+
+    @Override
+    protected void onReceiveCommandPacket(CommandPacket command) {
+
+    }
+
+    @Override
+    protected void onReceiveUserPacket(UserPacket user) {
 
     }
 

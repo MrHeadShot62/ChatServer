@@ -1,10 +1,12 @@
 package com.mrheadshot62.server.clientListener;
 
+import com.mrheadshot62.api.MultiPacket;
 import com.mrheadshot62.api.Packet;
 import com.mrheadshot62.api.Types;
 import com.mrheadshot62.api.streams.BlueBearInputStream;
 import com.mrheadshot62.api.types.*;
 import com.mrheadshot62.server.Client;
+import com.mrheadshot62.server.handler.MainHandler;
 
 
 abstract class AbstractClientListener extends Thread{
@@ -26,10 +28,8 @@ abstract class AbstractClientListener extends Thread{
     public void run() {
         while (input != null){
             try {
-                Object o = input.readObject();
-                if (!(o instanceof Packet)) throw new ClassNotFoundException("Input object is not Packet");
-                Packet packet = (Packet)o;
-                onReceivePacket(packet);
+                MultiPacket multiPacket = input.readMultiPacket();
+                onReceiveMultiPacket(multiPacket);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -38,27 +38,38 @@ abstract class AbstractClientListener extends Thread{
 
 
 
-    protected void onReceivePacket(Packet p){
-        try {
-            switch (p.getType()) {
-                case Types.Image:
-                    onReceiveImage((ImagePacket) p.getData());
-                    break;
-                case Types.Command:
-                    onReceiveCommand((CommandPacket) p.getData());
-                    break;
-                case Types.USER:
-                    onReceivedUser((UserPacket) p.getData());
-                default:
-                    throw new ClassNotFoundException("Invalid data type");
+    protected void onReceiveMultiPacket(MultiPacket p){
+        new MainHandler(p.getPackets()){
+            @Override
+            public void onReceivedAuthPacket(AuthPacket p) {
+                super.onReceivedAuthPacket(p);
+                onReceiveAuthPacket(p);
             }
-        }catch (ClassNotFoundException e){
-            e.printStackTrace();
-        }
+
+            @Override
+            public void onReceivedCommandPacket(CommandPacket p) {
+                super.onReceivedCommandPacket(p);
+                onReceiveCommandPacket(p);
+            }
+
+            @Override
+            public void onReceivedImagePacket(ImagePacket p) {
+                super.onReceivedImagePacket(p);
+                onReceiveImagePacket(p);
+            }
+
+            @Override
+            public void onReceivedUserPacket(UserPacket p) {
+                super.onReceivedUserPacket(p);
+                onReceiveUserPacket(p);
+            }
+        };
     }
 
-    protected abstract void onReceiveImage(ImagePacket image);
-    protected abstract void onReceiveCommand(CommandPacket command);
-    protected abstract void onReceivedUser(UserPacket user);
+
+    protected abstract void onReceiveImagePacket(ImagePacket image);
+    protected abstract void onReceiveAuthPacket(AuthPacket auth);
+    protected abstract void onReceiveCommandPacket(CommandPacket command);
+    protected abstract void onReceiveUserPacket(UserPacket user);
     protected abstract void onClientDisconnected(Client client);
 }

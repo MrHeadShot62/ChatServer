@@ -8,15 +8,13 @@ import com.mrheadshot62.api.types.AuthPacket;
  * Created by novak on 05.01.2017.
  */
 public abstract class AAuthHandler implements IPacketAuthHandler {
-    @Override
-    public void handlePacket(Packet p) {
+    public AAuthHandler(AuthPacket p) {
         try {
-            AuthPacket authPacket = (AuthPacket)p.getData();
-            handleAuthPacket(authPacket);
+            handleAuthPacket(p);
         }catch (Exception e){
             e.printStackTrace();
         }
     }
 
-    protected abstract void handleAuthPacket(AuthPacket packet);
+    protected abstract void handleAuthPacket(AuthPacket packet) throws Exception;
 }

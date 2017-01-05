@@ -2,14 +2,15 @@ package com.mrheadshot62.server.handler;
 
 import com.mrheadshot62.api.Packet;
 import com.mrheadshot62.api.Types;
-import com.mrheadshot62.api.types.PermissionPacket;
+import com.mrheadshot62.api.types.*;
 
 /**
  * Created by novak on 05.01.2017.
  */
-class MainHandler {
+public class MainHandler {
     private Packet[] packets;
     private PermissionPacket permisson;
+
 
 
     public MainHandler(Packet[] packets) {
@@ -19,13 +20,13 @@ class MainHandler {
                 for (Packet p : packets) {
                     switch (p.getType()){
                         case Types.AUTH:
-                            new AuthHandler().handlePacket(p);
+                            onReceivedAuthPacket((AuthPacket)p.getData());
                             break;
                         case Types.Command:
-                            new CommandHandler().handlePacket(p);
+                            onReceivedCommandPacket((CommandPacket)p.getData());
                             break;
                         case Types.Image:
-                            new ImageHandler().handlePacket(p);
+                            onReceivedImagePacket((ImagePacket)p.getData());
                             break;
                         default:
                             break;
@@ -33,6 +34,19 @@ class MainHandler {
                 }
             }
         }
+    }
+
+    public void onReceivedAuthPacket(AuthPacket p){
+        new AuthHandler(p);
+    }
+    public void onReceivedCommandPacket(CommandPacket p) {
+        new CommandHandler(p);
+    }
+    public void onReceivedImagePacket(ImagePacket p){
+        new ImageHandler(p);
+    }
+    public void onReceivedUserPacket(UserPacket p){
+        new UserHandler(p);
     }
 
     private boolean checkSession(){
