@@ -10,7 +10,7 @@ public class PermissionPacket {
 
     private final String sessionKey;
 
-    private final com.mrheadshot62.api.PermissionLevel permissionLevel;
+    private final PermissionLevel permissionLevel;
 
     public PermissionPacket(String sessionKey, PermissionLevel permissionLevel) {
         this.sessionKey = sessionKey;

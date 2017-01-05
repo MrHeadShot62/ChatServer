@@ -21,7 +21,7 @@ class DataBase {
     }
     ////////////////////////////////////////////////////////////////////
 
-    private static final String url = "jdbc:mysql://localhost:3306/qq";
+    private static final String url = "jdbc:mysql://localhost:3306/BlueBear";
     private static final String user = "root";
     private static final String password = "";
 
@@ -29,9 +29,10 @@ class DataBase {
     private Statement stmt;
     private ResultSet rs;
 
-    void addServerUser() {
+    void addServerUser(String name) {
         try {
-            rs = stmt.executeQuery("INSERT ");
+//            PreparedStatement stmtp = con.prepareStatement();
+            stmt.executeQuery("INSERT INTO BlueBear.users (name) VALUES ("+name+");");
         } catch (SQLException e) {
             e.printStackTrace();
         }finally {
@@ -42,13 +43,11 @@ class DataBase {
     private void connect(){
         try {
             con = DriverManager.getConnection(url, user, password);
-            stmt = con.createStatement();
-
-            rs = stmt.executeQuery(query);
-            while (rs.next()) {
-                int count = rs.getInt(1);
-                System.out.println("Total number of books in the table : " + count);
-            }
+//            rs = stmt.executeQuery(query);
+//            while (rs.next()) {
+//                int count = rs.getInt(1);
+//                System.out.println("Total number of books in the table : " + count);
+//            }
 
         } catch (SQLException sqlEx) {
             sqlEx.printStackTrace();
@@ -58,14 +57,14 @@ class DataBase {
     }
 
     public static void main(String args[]) {
-        String query = "select count(*) from books";
-
-
+        DataBase db = new DataBase();
+        db.connect();
+        db.addServerUser("name");
     }
 
     private void disconnect(){
-        try { con.close(); } catch(SQLException se) { /*can't do anything */ }
-        try { stmt.close(); } catch(SQLException se) { /*can't do anything */ }
-        try { rs.close(); } catch(SQLException se) { /*can't do anything */ }
+//        try { con.close(); } catch(SQLException se) { /*can't do anything */ }
+//        try { stmt.close(); } catch(SQLException se) { /*can't do anything */ }
+//        try { rs.close(); } catch(SQLException se) { /*can't do anything */ }
     }
 }
