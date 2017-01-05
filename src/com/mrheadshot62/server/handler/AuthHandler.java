@@ -13,7 +13,9 @@ class AuthHandler extends AAuthHandler{
     }
 
     @Override
-    protected void handleAuthPacket(AuthPacket packet) {
-
+    protected void handleAuthPacket(AuthPacket authPacket) {
+        System.out.println("PacketAuth received");
+        System.out.println("Login: "+ authPacket.getLogin());
+        System.out.println("Pass: "+ authPacket.getPass());
     }
 }

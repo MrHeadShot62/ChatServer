@@ -15,6 +15,7 @@ class CommandHandler extends ACommandHandler{
 
     @Override
     protected void handleCommandPacket(CommandPacket commandPacket) {
-
+        System.out.println("PacketCommand received");
+        System.out.println("Command id: "+ commandPacket.getCommand());
     }
 }
