@@ -21,8 +21,8 @@ public class Client {
 
     public Client(Socket socket, ServerStorage storage){
         try {
-            this.input = new BlueBearInputStream(socket.getInputStream());
             this.output = new BlueBearOutputStream(socket.getOutputStream());
+            this.input = new BlueBearInputStream(socket.getInputStream());
             this.ip = socket.getInetAddress().getHostAddress();
             this.id = storage.getClients().size();
         } catch (IOException e) {
