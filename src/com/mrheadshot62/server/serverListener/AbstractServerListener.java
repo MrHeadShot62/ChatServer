@@ -33,16 +33,16 @@ abstract class AbstractServerListener extends Thread{
                     Client client = new Client(socket, storage);
                     onClientConnected(client);
                     storage.addClient(client);
-                    ClientListener lisener = new ClientListener(client);
-                    onListenerAttached(lisener);
+
                     AbstractServerListener abstractServerListener = this;
-                    new ClientListener(client){
+                    ClientListener clientListener = new ClientListener(client){
                         @Override
                         protected void onClientDisconnected(Client client) {
                             super.onClientDisconnected(client);
                             abstractServerListener.onClientDisconnected(client);
                         }
                     };
+                    onListenerAttached(clientListener);
                 }catch (Exception e){
                     e.printStackTrace();
                 }
