@@ -11,6 +11,6 @@ class UserHandler extends AUserHandler {
 
     @Override
     protected void handleCommandPacket(UserPacket userPacket) {
-
+        System.out.println("UserPacket received");
     }
 }

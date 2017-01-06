@@ -32,7 +32,6 @@ abstract class AbstractClientListener extends Thread{
                 onReceiveMultiPacket(multiPacket);
             } catch (Exception e) {
                 onClientDisconnected(client);
-                e.printStackTrace();
                 return;
             }
         }

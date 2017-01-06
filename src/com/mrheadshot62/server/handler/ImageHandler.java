@@ -16,6 +16,6 @@ class ImageHandler extends AImageHandler{
 
     @Override
     protected void handleImagePacket(ImagePacket imagePacket) {
-
+        System.out.println("ImagePacket received");
     }
 }

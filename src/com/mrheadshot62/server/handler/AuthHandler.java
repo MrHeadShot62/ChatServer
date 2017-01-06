@@ -18,4 +18,6 @@ class AuthHandler extends AAuthHandler{
         System.out.println("Login: "+ authPacket.getLogin());
         System.out.println("Pass: "+ authPacket.getPass());
     }
+
+
 }
