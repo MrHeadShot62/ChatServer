@@ -6,7 +6,7 @@ import com.mrheadshot62.server.serverListener.ServerListener;
 import com.mrheadshot62.server.storage.ServerStorage;
 
 public class ServerController {
-    public static int PORT = 5555;
+    public static int PORT = 27015;
     private ServerStorage serverStorage;
     private ServerListener serverListener;
     private boolean isStarted=false;

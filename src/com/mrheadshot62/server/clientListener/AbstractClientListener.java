@@ -33,6 +33,7 @@ abstract class AbstractClientListener extends Thread{
             } catch (Exception e) {
                 onClientDisconnected(client);
                 e.printStackTrace();
+                return;
             }
         }
         onClientDisconnected(client);
