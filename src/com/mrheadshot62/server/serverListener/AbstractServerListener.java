@@ -28,6 +28,7 @@ abstract class AbstractServerListener extends Thread{
             while (!serverSocket.isClosed()){
                 try {
                     Socket socket = serverSocket.accept();
+                    System.out.println(socket.getInetAddress().getHostAddress());
                     Client client = new Client(socket, storage);
                     onClientConnected(client);
                     storage.addClient(client);
