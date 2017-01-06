@@ -5,7 +5,7 @@ import com.mrheadshot62.server.ServerController;
  */
 public class Main {
     public static void main(String[] args) {
-//        ServerController serverController = new ServerController();
-//        serverController.startServer();
+        ServerController serverController = new ServerController();
+        serverController.startServer();
     }
 }

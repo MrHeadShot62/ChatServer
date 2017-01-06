@@ -10,8 +10,8 @@ import java.util.ArrayList;
  * Created by novak on 04.01.2017.
  */
 class DataBase {
-    private ArrayList<Client> clients;
-    private ArrayList<ServerUser> serverUsers;
+    private ArrayList<Client> clients=new ArrayList<>();
+    private ArrayList<ServerUser> serverUsers=new ArrayList<>();
     ArrayList<Client> getClients() {
         return clients;
     }
