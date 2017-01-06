@@ -28,7 +28,14 @@ public class ServerStorage {
         return dataBase.getClients().get(id);
     }
 
-
+    public void removeClient(int id){
+        for (Client c:getClients()){
+            if (c.getId() == id){
+                getClients().remove(c);
+                return;
+            }
+        }
+    }
 
     @Nullable
     public ServerUser findServerUserById(int id){
