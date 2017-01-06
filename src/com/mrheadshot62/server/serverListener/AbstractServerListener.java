@@ -42,6 +42,7 @@ abstract class AbstractServerListener extends Thread{
                             abstractServerListener.onClientDisconnected(client);
                         }
                     };
+                    clientListener.start();
                     onListenerAttached(clientListener);
                 }catch (Exception e){
                     e.printStackTrace();
