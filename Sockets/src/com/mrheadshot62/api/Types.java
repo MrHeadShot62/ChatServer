@@ -11,4 +11,5 @@ public class Types {
     public static final int AUTH = 982;
     public static final int PERMISSION = 601;
     public static final int REGISTER = 18;
+
 }

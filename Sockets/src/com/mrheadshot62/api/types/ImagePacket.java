@@ -6,10 +6,11 @@ import java.io.Serializable;
 /**
  * Created by novak on 04.01.2017.
  */
-public class ImagePacket implements Serializable{
+public class ImagePacket extends CorePacket implements Serializable{
     private String image64;
 
     public ImagePacket(Image image) {
+        super();
         this.image64 = "123"; // TODO SERIALIZE IMAGE
     }
 

@@ -90,7 +90,7 @@ public class MainHandler {
         if(permissionPacket.getPermissionLevel() >= permissionLevel){
             return true;
         }else {
-            System.out.println("Пользователь пытался получить доступ к уровню доступа ["+ permissionLevel +"] . Его уровень доступа ["+ permissionPacket.getPermissionLevel()+"]");
+            System.out.println("Пользователь [] пытался получить доступ к уровню доступа ["+ permissionLevel +"] . Его уровень доступа ["+ permissionPacket.getPermissionLevel()+"]");
             return false;
         }
     }
