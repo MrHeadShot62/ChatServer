@@ -13,7 +13,7 @@ public class ServerController {
 
 
     public ServerController() {
-        this.serverStorage = new ServerStorage();
+        this.serverStorage = ServerStorage.getInstance();
         this.serverListener = new ServerListener(serverStorage){
             @Override
             protected void onServerStarted() {

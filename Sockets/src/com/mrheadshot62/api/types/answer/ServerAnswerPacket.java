@@ -7,9 +7,9 @@ import com.mrheadshot62.api.TypesAnswer;
  */
 public class ServerAnswerPacket extends CoreServerAnswerPacket {
 
-    public final int serverAnswerCode;
-    public final int type;
-    public final Object objects;
+    private final int serverAnswerCode;
+    private final int type;
+    private final Object objects;
 
     public ServerAnswerPacket(int serverAnswerCode, int type, Object objects) {
         this.serverAnswerCode = serverAnswerCode;
@@ -21,5 +21,17 @@ public class ServerAnswerPacket extends CoreServerAnswerPacket {
         this.serverAnswerCode = serverAnswerCode;
         this.type = TypesAnswer.ONLYCODE;
         this.objects = null;
+    }
+
+    public int getServerAnswerCode() {
+        return serverAnswerCode;
+    }
+
+    public int getType() {
+        return type;
+    }
+
+    public Object getObjects() {
+        return objects;
     }
 }

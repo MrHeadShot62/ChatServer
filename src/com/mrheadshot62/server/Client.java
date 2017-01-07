@@ -17,7 +17,6 @@ public class Client {
     private BlueBearOutputStream output;
     private String ip;
     private int id;
-    private UserPacket user;
 
     public Client(Socket socket, ServerStorage storage){
         try {
@@ -44,13 +43,5 @@ public class Client {
 
     public int getId() {
         return id;
-    }
-
-    public void setUser(UserPacket user) {
-        this.user = user;
-    }
-
-    public UserPacket getUser() {
-        return user;
     }
 }

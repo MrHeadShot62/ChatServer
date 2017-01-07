@@ -8,6 +8,8 @@ import com.mrheadshot62.server.Client;
 import com.mrheadshot62.server.clientListener.ClientListener;
 import com.mrheadshot62.server.storage.ServerStorage;
 
+import java.io.IOException;
+
 /**
  * Created by novak on 04.01.2017.
  */
@@ -17,15 +19,14 @@ public class ServerListener extends AbstractServerListener {
     }
 
 
-    public void sendPacket(Packet... packets){
-        boolean valid=false;
-        for (Packet p:packets){
-            if (p.getType() == Types.PERMISSION) valid=true;
+    public static void sendPacket(MultiPacket multiPacket, int id){
+        try{
+            ServerStorage.getInstance().getClient(id).getOutput().writeMultiPacket(multiPacket);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        if (!valid) return;
-        MultiPacket multiPacket = new MultiPacket(packets);
-
     }
+
 
     @Override
     protected void onListenerAttached(ClientListener clientListener) {
