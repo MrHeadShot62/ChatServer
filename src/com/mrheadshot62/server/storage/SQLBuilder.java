@@ -10,8 +10,8 @@ import java.util.ArrayList;
  */
 public class SQLBuilder {
     private Statement stmt;
-    ArrayList<String> query = new ArrayList<>();
-    ArrayList<String> rQuery = new ArrayList<>();
+    private ArrayList<String> query = new ArrayList<>();
+    private ArrayList<String> rQuery = new ArrayList<>();
     private int iter = 0;
     private boolean sendedQuery = false;
     private ResultSet rs;
