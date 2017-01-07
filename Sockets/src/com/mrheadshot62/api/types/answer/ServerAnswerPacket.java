@@ -2,10 +2,12 @@ package com.mrheadshot62.api.types.answer;
 
 import com.mrheadshot62.api.TypesAnswer;
 
+import java.io.Serializable;
+
 /**
  * Created by DmitriyRoot on 07.01.2017.
  */
-public class ServerAnswerPacket extends CoreServerAnswerPacket {
+public class ServerAnswerPacket extends CoreServerAnswerPacket implements Serializable {
 
     private final int serverAnswerCode;
     private final int type;

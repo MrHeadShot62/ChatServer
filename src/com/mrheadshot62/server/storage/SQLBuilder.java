@@ -15,7 +15,6 @@ public class SQLBuilder {
     private int iter = 0;
     private boolean sendedQuery = false;
     private ResultSet rs;
-    private static Connector connector=new Connector();
 
 
     /**
@@ -31,7 +30,9 @@ public class SQLBuilder {
             }
         }
         try {
-            stmt = Connector.getConnection().createStatement();
+            if (stmt == null) {
+                stmt = Connector.getConnection().createStatement();
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -248,19 +249,19 @@ public class SQLBuilder {
             return con;
         }
 
-        private static void test() {
-            com.mrheadshot62.server.storage.SQLBuilder sqlBuilder = new com.mrheadshot62.server.storage.SQLBuilder().addUpdateQuery(ServerStorage.USER_TABLE, "pass", "789", "id", "9").addSelectQuery(ServerStorage.USER_TABLE, new String[]{"id", "login"}, "id", "8", 50).addSelectQuery(ServerStorage.USER_TABLE, new String[]{"id", "login"}, "id", "7", 50);
-            System.out.println(sqlBuilder.getQuery());
-            while (sqlBuilder.executeNext()) {
-                try {
-                    ResultSet r = sqlBuilder.getResult();
-                    while (r.next()) {
-                        System.out.printf("%s %s%n", r.getString("id"), r.getString("login"));
-                    }
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
+//        private static void test() {
+//            com.mrheadshot62.server.storage.SQLBuilder sqlBuilder = new com.mrheadshot62.server.storage.SQLBuilder().addUpdateQuery(ServerStorage.USER_TABLE, "pass", "789", "id", "9").addSelectQuery(ServerStorage.USER_TABLE, new String[]{"id", "login"}, "id", "8", 50).addSelectQuery(ServerStorage.USER_TABLE, new String[]{"id", "login"}, "id", "7", 50);
+//            System.out.println(sqlBuilder.getQuery());
+//            while (sqlBuilder.executeNext()) {
+//                try {
+//                    ResultSet r = sqlBuilder.getResult();
+//                    while (r.next()) {
+//                        System.out.printf("%s %s%n", r.getString("id"), r.getString("login"));
+//                    }
+//                } catch (SQLException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        }
     }
 }

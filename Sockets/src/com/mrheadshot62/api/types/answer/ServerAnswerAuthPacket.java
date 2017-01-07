@@ -1,9 +1,11 @@
 package com.mrheadshot62.api.types.answer;
 
+import java.io.Serializable;
+
 /**
  * Created by DmitriyRoot on 07.01.2017.
  */
-public class ServerAnswerAuthPacket {
+public class ServerAnswerAuthPacket implements Serializable{
 
     private final String nameUser;
     private final String countryUser;

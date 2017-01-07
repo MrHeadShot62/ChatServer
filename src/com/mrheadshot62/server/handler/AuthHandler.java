@@ -1,9 +1,11 @@
 package com.mrheadshot62.server.handler;
 
 
+import com.mrheadshot62.api.ServerAnswerCode;
 import com.mrheadshot62.api.types.AuthPacket;
 
 import com.mrheadshot62.api.types.answer.ServerAnswerAuthPacket;
+import com.mrheadshot62.api.types.answer.ServerAnswerPacket;
 import com.mrheadshot62.server.PacketManager;
 import com.mrheadshot62.server.handler.abstracts.AAuthHandler;
 import com.mrheadshot62.server.storage.SQLBuilder;
@@ -25,6 +27,7 @@ class AuthHandler extends AAuthHandler{
         System.out.println("PacketAuth received");
         System.out.println("Login: "+ authPacket.getLogin());
         System.out.println("Pass: "+ authPacket.getPass());
+        System.out.println("[DEBUG] id:" +id);
 
         if (checkAuth(authPacket)){
             String session = String.valueOf((Math.random()*9)*5);
@@ -33,12 +36,14 @@ class AuthHandler extends AAuthHandler{
             try {
                 while (rs.next()) {
                     PacketManager.packetGenerator(new ServerAnswerAuthPacket(rs.getString(Tables.USER_NAME), rs.getString(Tables.USER_COUNTRY), rs.getString(Tables.USER_SESSION), rs.getInt(Tables.USER_PERMISSIONLEVEL)), id);
+
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
             }
         }else{
-            System.out.println("makaka");
+            PacketManager.packetGenerator(new ServerAnswerPacket(ServerAnswerCode.UNAUTHRIZED), id);
+            System.out.println("UnAuthorized #"+id);
         }
     }
 
