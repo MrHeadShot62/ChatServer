@@ -38,31 +38,5 @@ public class ServerStorage {
         }
     }
 
-    @Nullable
-    public ServerUser findServerUserById(int id){
-        for (ServerUser u: storage.getServerUsers()){
-            if (u.getId() == id){
-                return u;
-            }
-        }
-        return null;
-    }
-
-    @Nullable
-    public ServerUser findServerUserByUser(UserPacket user){
-        for (ServerUser u: storage.getServerUsers()){
-            if (u.getUser().equals(user)){
-                return u;
-            }
-        }
-        return null;
-    }
-
-    public int createServerUser(UserPacket user){
-        ServerUser serverUser = new ServerUser(user, storage.getServerUsers().size()+100);
-        storage.getServerUsers().add(serverUser);
-        return serverUser.getId();
-    }
-
 
 }
