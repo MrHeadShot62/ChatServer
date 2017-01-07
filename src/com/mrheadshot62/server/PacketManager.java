@@ -7,7 +7,6 @@ import com.mrheadshot62.api.types.*;
 import com.mrheadshot62.api.MultiPacket;
 
 import com.mrheadshot62.api.types.answer.ServerAnswerAuthPacket;
-import org.arcticsoft.bluebearlive.socket.ConnectionController;
 
 /**
  * Created by DmitriyRoot on 05.01.2017.
