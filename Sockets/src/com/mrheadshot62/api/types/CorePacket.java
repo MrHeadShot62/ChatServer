@@ -9,20 +9,12 @@ import java.util.UUID;
  * Created by DmitriyRoot on 07.01.2017.
  */
 public abstract class CorePacket implements Serializable{
-
-    //private String date;
-    //private UUID uuid;
+    private int id;
 
     public CorePacket() {
-        //this.date = new Date().toString();
-        //this.uuid = UUID.randomUUID();
+
     }
-
-//    public String getDate() {
-//        return date;
-//    }
-
-//    public UUID getUuid() {
-//        return uuid;
-//    }
+    public int getId() {
+        return id;
+    }
 }

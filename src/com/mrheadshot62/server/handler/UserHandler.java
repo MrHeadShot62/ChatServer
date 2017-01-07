@@ -5,8 +5,8 @@ import com.mrheadshot62.server.handler.abstracts.AUserHandler;
 
 class UserHandler extends AUserHandler {
 
-    UserHandler(UserPacket p) {
-        super(p);
+    public UserHandler(UserPacket p, int id) {
+        super(p, id);
     }
 
     @Override

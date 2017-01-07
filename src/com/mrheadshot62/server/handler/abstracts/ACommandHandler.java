@@ -8,7 +8,9 @@ import com.mrheadshot62.api.types.CommandPacket;
  * Created by novak on 05.01.2017.
  */
 public abstract class ACommandHandler implements IPacketCommandHandler{
-    public ACommandHandler(CommandPacket p) {
+    protected int id;
+    public ACommandHandler(CommandPacket p, int id) {
+        this.id = id;
         try {
             handleCommandPacket(p);
         }catch (Exception e){

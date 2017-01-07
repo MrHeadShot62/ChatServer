@@ -8,7 +8,9 @@ import com.mrheadshot62.api.types.ImagePacket;
  * Created by novak on 05.01.2017.
  */
 public abstract class AImageHandler implements IPacketImageHandler{
-    public AImageHandler(ImagePacket p) {
+    protected int id;
+    public AImageHandler(ImagePacket p, int id) {
+        this.id = id;
         try {
             handleImagePacket(p);
         }catch(Exception e){

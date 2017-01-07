@@ -7,4 +7,5 @@ public class TypesAnswer {
 
     public static final int ONLYCODE = 1;
     public static final int COMPRESEDIMAGEPACKET = 2;
+    public static final int AUTHPACKET = 578;
 }

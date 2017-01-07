@@ -7,7 +7,9 @@ import com.mrheadshot62.api.types.UserPacket;
  * Created by novak on 05.01.2017.
  */
 public abstract class AUserHandler implements IPacketUserHandler {
-    public AUserHandler(UserPacket p) {
+    protected int id;
+    public AUserHandler(UserPacket p, int id) {
+        this.id = id;
         try {
             handleCommandPacket(p);
         }catch (Exception e){

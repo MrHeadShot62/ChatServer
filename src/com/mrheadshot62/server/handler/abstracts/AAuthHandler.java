@@ -8,7 +8,9 @@ import com.mrheadshot62.api.types.AuthPacket;
  * Created by novak on 05.01.2017.
  */
 public abstract class AAuthHandler implements IPacketAuthHandler {
-    public AAuthHandler(AuthPacket p) {
+    protected int id;
+    public AAuthHandler(AuthPacket p, int id) {
+        this.id = id;
         try {
             handleAuthPacket(p);
         }catch (Exception e){

@@ -21,7 +21,7 @@ public class SQLBuilder {
     /**
      * @param query кастомные запросы
      */
-    SQLBuilder(String... query) {
+    public SQLBuilder(String... query) {
 
         for (String s : query) {
             if (s.startsWith("INSERT") && s.startsWith("UPDATE")) {

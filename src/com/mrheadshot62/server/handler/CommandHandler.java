@@ -9,8 +9,8 @@ import com.mrheadshot62.server.handler.abstracts.ACommandHandler;
  */
 class CommandHandler extends ACommandHandler{
 
-    public CommandHandler(CommandPacket p) {
-        super(p);
+    public CommandHandler(CommandPacket p, int id) {
+        super(p, id);
     }
 
     @Override

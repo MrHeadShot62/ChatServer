@@ -9,9 +9,8 @@ import com.mrheadshot62.server.handler.abstracts.AImageHandler;
  */
 class ImageHandler extends AImageHandler{
 
-
-    public ImageHandler(ImagePacket p) {
-        super(p);
+    public ImageHandler(ImagePacket p, int id) {
+        super(p, id);
     }
 
     @Override

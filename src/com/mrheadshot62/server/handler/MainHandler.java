@@ -49,16 +49,16 @@ public class MainHandler {
     }
 
     public void onReceivedAuthPacket(AuthPacket p){
-        new AuthHandler(p);
+        new AuthHandler(p, permission.getId());
     }
     public void onReceivedCommandPacket(CommandPacket p) {
-        new CommandHandler(p);
+        new CommandHandler(p, permission.getId());
     }
     public void onReceivedImagePacket(ImagePacket p){
-        new ImageHandler(p);
+        new ImageHandler(p, permission.getId());
     }
     public void onReceivedUserPacket(UserPacket p){
-        new UserHandler(p);
+        new UserHandler(p, permission.getId());
     }
 
     private boolean checkSession(){
