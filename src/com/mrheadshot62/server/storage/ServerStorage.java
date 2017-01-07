@@ -11,21 +11,22 @@ import java.util.ArrayList;
  * Created by novak on 04.01.2017.
  */
 public class ServerStorage {
-    private DataBase dataBase;
+    public static final String USER_TABLE = "BlueBear.users";
+    private Storage storage;
     public ServerStorage() {
-        this.dataBase = new DataBase();
+        this.storage = new Storage();
     }
 
     public ArrayList<Client> getClients(){
-        return dataBase.getClients();
+        return storage.getClients();
     }
 
     public void addClient(Client client){
-        dataBase.getClients().add(client);
+        storage.getClients().add(client);
     }
 
     public Client getClient(int id){
-        return dataBase.getClients().get(id);
+        return storage.getClients().get(id);
     }
 
     public void removeClient(int id){
@@ -39,7 +40,7 @@ public class ServerStorage {
 
     @Nullable
     public ServerUser findServerUserById(int id){
-        for (ServerUser u:dataBase.getServerUsers()){
+        for (ServerUser u: storage.getServerUsers()){
             if (u.getId() == id){
                 return u;
             }
@@ -49,7 +50,7 @@ public class ServerStorage {
 
     @Nullable
     public ServerUser findServerUserByUser(UserPacket user){
-        for (ServerUser u:dataBase.getServerUsers()){
+        for (ServerUser u: storage.getServerUsers()){
             if (u.getUser().equals(user)){
                 return u;
             }
@@ -58,8 +59,10 @@ public class ServerStorage {
     }
 
     public int createServerUser(UserPacket user){
-        ServerUser serverUser = new ServerUser(user, dataBase.getServerUsers().size()+100);
-        dataBase.getServerUsers().add(serverUser);
+        ServerUser serverUser = new ServerUser(user, storage.getServerUsers().size()+100);
+        storage.getServerUsers().add(serverUser);
         return serverUser.getId();
     }
+
+
 }
