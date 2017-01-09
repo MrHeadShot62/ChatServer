@@ -9,7 +9,7 @@ public class Tables {
     public static final String USER_PASS = "pass";
     public static final String USER_COUNTRY = "country";
     public static final String USER_PERMISSIONLEVEL = "permissionLevel";
-    public static final String USER_SESSION = "permissionLevel";
+    public static final String USER_SESSION = "session";
     public static final String USER_LOGIN = "login";
     public static final String USER_ID = "id";
 }

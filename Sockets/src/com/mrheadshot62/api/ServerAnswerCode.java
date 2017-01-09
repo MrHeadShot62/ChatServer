@@ -12,7 +12,7 @@ public class ServerAnswerCode {
     public static final int VERSIONCLIENTNOTSUPPORTED = 105;    // Версия клиента устарела
     //ошибки клиента
     public static final int BADREQUEST = 400;                   // Неверный запрос
-    public static final int UNAUTHRIZED = 401;                  // Не авторизирован
+    public static final int ALREADYAUTHRIZED = 401;             // Уже авторизирован
     public static final int NOCONTENT = 402;                    // Запрос пустой
     public static final int FORBIDDEN = 403;                    // Запрещено
     public static final int NOTFOUND = 404;                     // Не найденео
@@ -27,6 +27,7 @@ public class ServerAnswerCode {
     public static final int UNSUPPORTEDIMAGETYPE = 416;         // Ваше изображение не поддерживается на сервеер
     public static final int LOCKED = 423;                       // Ваш запрос заблокирован (Добавить в проверку)
     public static final int TOOMANYREQUEST = 429;               // Слишком много запросов к серверу
+    public static final int INCORECTLOGINDATA= 430;             // Неправельный логин/пароль
     //ошибки сервера
     public static final int SERVERERROR = 500;                  // Ошибка сервера
     public static final int BADCONNECT = 502;                   // Плохое соеденение с сервером

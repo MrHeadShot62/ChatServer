@@ -28,14 +28,18 @@ public class PacketManager{
 //        }
 //    }
 
-    public static void packetGenerator(ServerAnswerAuthPacket serverAnswerAuthPacket, int id) {
+    public synchronized static void packetGenerator(ServerAnswerAuthPacket serverAnswerAuthPacket, int id) {
         sendPackets(new MultiPacket(new Packet(serverAnswerAuthPacket, TypesAnswer.AUTHPACKET)), id);
     }
-    public static void packetGenerator(ServerAnswerPacket serverAnswerPacket, int id) {
-        sendPackets(new MultiPacket(new Packet(serverAnswerPacket, TypesAnswer.AUTHPACKET)), id);
+    public synchronized static void packetGenerator(ServerAnswerPacket serverAnswerPacket, int id) {
+        sendPackets(new MultiPacket(new Packet(serverAnswerPacket, TypesAnswer.ONLYCODE)), id);
     }
 
-    private static int sendPackets(MultiPacket multiPacket, int id) {
+    public synchronized static void generateAnswer(int code, int id){
+        sendPackets(new MultiPacket(new Packet(new ServerAnswerPacket(code), TypesAnswer.ONLYCODE)), id);
+    }
+
+    private synchronized static int sendPackets(MultiPacket multiPacket, int id) {
         ServerListener.sendPacket(multiPacket, id);
         return 0;
     }

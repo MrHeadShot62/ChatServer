@@ -15,26 +15,27 @@ public class SQLBuilder {
     private int iter = 0;
     private boolean sendedQuery = false;
     private ResultSet rs;
+    private static SQLBuilder instance;
 
-
-    /**
-     * @param query кастомные запросы
-     */
-    public SQLBuilder(String... query) {
-
-        for (String s : query) {
-            if (s.startsWith("INSERT") && s.startsWith("UPDATE")) {
-                addToQuery(s);
-            }else {
-                addToResultQuery(s);
-            }
+    public static SQLBuilder getInstance() {
+        if (instance == null) {
+            instance = new SQLBuilder();
+            return instance;
+        } else {
+            return instance;
         }
-        try {
-            if (stmt == null) {
+    }
+
+    private SQLBuilder() {
+    }
+
+    private void connect(){
+        if (stmt == null) {
+            try {
                 stmt = Connector.getConnection().createStatement();
+            } catch (SQLException e) {
+                e.printStackTrace();
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
     }
 
@@ -45,30 +46,42 @@ public class SQLBuilder {
         return rs;
     }
 
-
     /**
      * Отсылает все запросы без результата и одно с результатом, если такое имеется
      * @return Результат запроса
      */
     @Nullable
     public ResultSet executeSingle(){
-        executeNoResult();
+        pExecuteNoResult();
         if (rQuery.size()==1) {
             try {
                 ResultSet rs = stmt.executeQuery(rQuery.get(0));
                 this.rs = rs;
+                reset();
                 return rs;
             } catch (SQLException e) {
                 e.printStackTrace();
             }
         }
+        reset();
         return null;
+    }
+
+    private void reset(){
+        rQuery=new ArrayList<>();
+        query=new ArrayList<>();
+        sendedQuery=false;
+        stmt=null;
     }
 
     /**
      * Посылает запросы, которые не возвращают результат
      */
     public void executeNoResult(){
+        pExecuteNoResult();
+    }
+
+    private void pExecuteNoResult(){
         if (!sendedQuery) {
             for (String s : query) {
                 try {
@@ -80,7 +93,6 @@ public class SQLBuilder {
             sendedQuery=true;
         }
     }
-
     /**
      * Пример кода для получения результата нескольких запросов:
      *<pre>{@code SQLBuilder sqlBuilder = new SQLBuilder().addUpdateQuery(USER_TABLE, "pass", "789", "id", "9").addSelectQuery(USER_TABLE, new String[]{"id", "login"}, "id", "8", 50).addSelectQuery(USER_TABLE, new String[]{"id", "login"}, "id", "7", 50);
@@ -98,8 +110,11 @@ public class SQLBuilder {
      *
      */
     public boolean executeNext() {
-        executeNoResult();
-        if (iter == rQuery.size()) return false;
+        pExecuteNoResult();
+        if (iter == rQuery.size()){
+            reset();
+            return false;
+        }
         try {
             String q = rQuery.get(iter);
             rs = stmt.executeQuery(q);
@@ -119,10 +134,11 @@ public class SQLBuilder {
      * @param variables Переменные, которые следует получить
      * @param whereVar переменная для WHERE (можно null)
      * @param whereData значание переменной для WHERE (можно null)
-     * @param limit лимит результатов, больще нуля
+     * @param limit лимит результатов, больше нуля
      * @return this
      */
     public SQLBuilder addSelectQuery(String table, String[] variables, String whereVar, String whereData, int limit) {
+        connect();
         if (limit <= 0) addToQuery("");
         StringBuilder builder = new StringBuilder();
         builder.append("SELECT ");
@@ -162,6 +178,7 @@ public class SQLBuilder {
         return addSelectQuery(table, new String[]{"*"}, whereVar, whereData, limit);
     }
 
+
     /**
      * Генерация запроса для обновления
      *
@@ -173,18 +190,21 @@ public class SQLBuilder {
      * @return this
      */
     public SQLBuilder addUpdateQuery(String table, String var, String data, String whereVar, String whereData) {
+        connect();
         StringBuilder builder = new StringBuilder();
-        builder.append("UPDATE ").append(table).append(" SET `").append(var).append("` = ").append(data);
+        builder.append("UPDATE ").append(table).append(" SET `").append(var).append("` = `").append(data);
         if (whereData != null && whereVar != null) {
-            builder.append(" WHERE `").append(whereVar).append("` = ").append(whereData).append(";");
+            builder.append("` WHERE `").append(whereVar).append("` = ").append(whereData).append(";");
         } else {
-            builder.append(";");
+            builder.append("`;");
         }
         addToQuery(builder.toString());
+        System.out.println(builder.toString());
         return this;
     }
 
     public SQLBuilder addInsertQuery(String table, String[] vars, String[] datas) {
+        connect();
         if (vars.length != datas.length) addToQuery("");
         StringBuilder builder = new StringBuilder();
         builder.append("INSERT INTO ").append(table).append("(");

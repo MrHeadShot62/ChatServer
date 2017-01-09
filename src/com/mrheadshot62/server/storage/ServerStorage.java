@@ -1,14 +1,11 @@
 package com.mrheadshot62.server.storage;
 
-import com.mrheadshot62.api.types.UserPacket;
 import com.mrheadshot62.server.Client;
-import com.mrheadshot62.server.ServerUser;
+import com.mrheadshot62.server.User;
 import com.sun.istack.internal.Nullable;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
 
@@ -25,7 +22,7 @@ public class ServerStorage {
     }
 
 
-    public static ServerStorage getInstance() {
+    public synchronized static ServerStorage getInstance() {
         if (instance==null){
             instance = new ServerStorage();
             return instance;
@@ -34,23 +31,23 @@ public class ServerStorage {
         }
     }
 
-    public Set<Map.Entry<Integer,Client>> getClients(){
+    public synchronized Set<Map.Entry<Integer,Client>> getClients(){
         return storage.getClients();
     }
 
-    public Map<Integer, Client> getMap(){
+    public synchronized Map<Integer, Client> getMap(){
         return storage.getMap();
     }
 
-    public void addClient(Client client){
+    public synchronized void addClient(Client client){
         storage.getMap().put(client.getId(), client);
     }
 
-    public Client getClient(int id){
+    public synchronized Client getClient(int id){
         return storage.getMap().get(id);
     }
 
-    public void removeClient(int id){
+    public synchronized void removeClient(int id){
         for (Map.Entry<Integer, Client> map:getClients()){
             if (map.getValue().getId() == id){
                 getClients().remove(map);
@@ -59,8 +56,13 @@ public class ServerStorage {
         }
     }
 
-    public String[] getLoginAndPassUser(int id){
-        SQLBuilder sql = new SQLBuilder();
+    /**
+     * @param id пользователя
+     * @return String[0] - логин<br>
+     *         String[1] - пароль
+     */
+    public synchronized String[] getLoginAndPassUser(int id){
+        SQLBuilder sql = SQLBuilder.getInstance();
         sql.addSelectQuery(Tables.USER, new String[]{Tables.USER_LOGIN, Tables.USER_PASS}, Tables.USER_ID, String.valueOf(id), 1);
         ResultSet rs = sql.executeSingle();
         String[] strings = new String[2];
@@ -75,7 +77,30 @@ public class ServerStorage {
         return strings;
     }
 
-    public void updateSessionKey(String sessionKey, int id){
-        new SQLBuilder().addUpdateQuery(Tables.USER, Tables.USER_SESSION, sessionKey, Tables.USER_ID, String.valueOf(id)).executeNoResult();
+    public synchronized void updateSessionKey(String sessionKey, int id){
+        SQLBuilder.getInstance().addUpdateQuery(Tables.USER, Tables.USER_SESSION, sessionKey, Tables.USER_ID, String.valueOf(id)).executeNoResult();
+    }
+
+    public synchronized void addUser(User user){
+        if (!storage.getUsers().containsKey(user.getId())){
+            storage.getUsers().put(user.getId(), user);
+        }
+    }
+
+    public synchronized boolean hasUser(int id){
+        if (storage.getUsers().containsKey(id)){
+            return true;
+        }else {
+            return false;
+        }
+    }
+
+    @Nullable
+    public synchronized User getUser(int id){
+        if (storage.getUsers().containsKey(id)){
+            return storage.getUsers().get(id);
+        }else{
+            return null;
+        }
     }
 }
