@@ -14,6 +14,7 @@ import com.mrheadshot62.server.storage.Tables;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.UUID;
 
 class AuthHandler extends AAuthHandler{
 
@@ -28,18 +29,11 @@ class AuthHandler extends AAuthHandler{
         System.out.printf("[DEBUG]              Login: %s%n",authPacket.getLogin());
         System.out.printf("[DEBUG]               Pass: %s%n",authPacket.getPass());
         if (checkAuth(authPacket)){
-            String session = String.valueOf(((Math.random()*90)*50));
+            String session = UUID.randomUUID().toString();
             ServerStorage.getInstance().updateSessionKey(session, id);
-            ResultSet rs = SQLBuilder.getInstance().addSelectQuery(Tables.USER, new String[]{Tables.USER_NAME, Tables.USER_COUNTRY, Tables.USER_SESSION, Tables.USER_PERMISSIONLEVEL}, Tables.USER_ID, String.valueOf(id), 1).executeSingle();
-            try {
-                while (rs.next()) {
-                    System.out.printf("[DEBUG] Generated new session key for #%d: %s%n", id, session);
-                    PacketManager.packetGenerator(new ServerAnswerAuthPacket(rs.getString(Tables.USER_NAME), rs.getString(Tables.USER_COUNTRY), rs.getString(Tables.USER_SESSION), rs.getInt(Tables.USER_PERMISSIONLEVEL)), id);
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-                PacketManager.generateAnswer(ServerAnswerCode.SERVERERROR, id);
-            }
+            String[] strings = ServerStorage.getInstance().getAuthUser(id);
+            System.out.printf("[DEBUG] Generated new session key for #%d: %s%n", id, session);
+            PacketManager.packetGenerator(new ServerAnswerAuthPacket(strings[0],strings[3],strings[2],Integer.valueOf(strings[1])), id);
         }else{
             PacketManager.generateAnswer(ServerAnswerCode.FORBIDDEN, id);
         }

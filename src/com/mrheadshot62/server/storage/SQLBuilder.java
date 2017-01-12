@@ -157,7 +157,7 @@ public class SQLBuilder {
         }
         builder.append("FROM ").append(table).append(" ");
         if (whereVar != null && whereData != null) {
-            builder.append("WHERE `").append(whereVar).append("` = ").append(whereData).append(" ");
+            builder.append("WHERE `").append(whereVar).append("` = '").append(whereData).append("' ");
         }
         builder.append("LIMIT ").append(limit).append(";");
         addToResultQuery(builder.toString());
@@ -192,11 +192,11 @@ public class SQLBuilder {
     public SQLBuilder addUpdateQuery(String table, String var, String data, String whereVar, String whereData) {
         connect();
         StringBuilder builder = new StringBuilder();
-        builder.append("UPDATE ").append(table).append(" SET `").append(var).append("` = `").append(data);
+        builder.append("UPDATE ").append(table).append(" SET `").append(var).append("` = '").append(data);
         if (whereData != null && whereVar != null) {
-            builder.append("` WHERE `").append(whereVar).append("` = ").append(whereData).append(";");
+            builder.append("' WHERE `").append(whereVar).append("` = ").append(whereData).append(";");
         } else {
-            builder.append("`;");
+            builder.append("';");
         }
         addToQuery(builder.toString());
         System.out.println(builder.toString());
@@ -247,41 +247,5 @@ public class SQLBuilder {
         return stringBuilder.toString();
     }
 
-    private static class Connector {
-        private static final String url = "jdbc:mysql://localhost:3306/BlueBear";
-        private static final String user = "root";
-        private static final String password = "";
-        private static Connection con;
-        private static boolean isConnected=false;
 
-        private static void connect() {
-            try {
-                con = DriverManager.getConnection(url, user, password);
-                isConnected = true;
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-
-        }
-
-        static Connection getConnection(){
-            if (!isConnected)connect();
-            return con;
-        }
-
-//        private static void test() {
-//            com.mrheadshot62.server.storage.SQLBuilder sqlBuilder = new com.mrheadshot62.server.storage.SQLBuilder().addUpdateQuery(ServerStorage.USER_TABLE, "pass", "789", "id", "9").addSelectQuery(ServerStorage.USER_TABLE, new String[]{"id", "login"}, "id", "8", 50).addSelectQuery(ServerStorage.USER_TABLE, new String[]{"id", "login"}, "id", "7", 50);
-//            System.out.println(sqlBuilder.getQuery());
-//            while (sqlBuilder.executeNext()) {
-//                try {
-//                    ResultSet r = sqlBuilder.getResult();
-//                    while (r.next()) {
-//                        System.out.printf("%s %s%n", r.getString("id"), r.getString("login"));
-//                    }
-//                } catch (SQLException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//        }
-    }
 }
