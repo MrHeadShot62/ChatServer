@@ -1,9 +1,7 @@
 package com.mrheadshot62.server.handler;
 
 import com.mrheadshot62.api.types.UserPacket;
-import com.mrheadshot62.server.User;
 import com.mrheadshot62.server.handler.abstracts.AUserHandler;
-import com.mrheadshot62.server.storage.SQLBuilder;
 import com.mrheadshot62.server.storage.ServerStorage;
 
 class UserHandler extends AUserHandler {

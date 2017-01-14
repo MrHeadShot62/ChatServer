@@ -24,7 +24,7 @@ public class MainHandler {
                             System.out.println("Сравниваем права доступа с базой данных");
                             break;
                         case Types.AUTH:
-                            if (checkPermissionLevel(this.permission, PermissionLevel.AUTH))
+                            if (checkPermissionLevel(this.permission, PermissionLevel.GUEST))
                             onReceivedAuthPacket((AuthPacket)p.getData());
                             break;
                         case Types.Command:

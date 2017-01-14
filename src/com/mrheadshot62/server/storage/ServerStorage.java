@@ -1,12 +1,9 @@
 package com.mrheadshot62.server.storage;
 
 import com.mrheadshot62.server.Client;
-import com.mrheadshot62.server.User;
+import com.mrheadshot62.api.types.User;
 import com.sun.istack.internal.Nullable;
 
-import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -28,9 +25,8 @@ public class ServerStorage {
     static{
         preparedStatementHashMap.put("updateSessionKey",String.format("UPDATE %s SET `%s` = ? WHERE `id` = ?", Tables.USER, Tables.USER_SESSION));
         preparedStatementHashMap.put("getLoginAndPass",String.format("SELECT `%s`, `%s` FROM %s WHERE `id` = ?", Tables.USER_LOGIN, Tables.USER_PASS, Tables.USER));
-        preparedStatementHashMap.put("getAuthUser",String.format("SELECT `%s`, `%s`, `%s`, `%s` FROM %s WHERE `id` = ?", Tables.USER_NAME, Tables.USER_COUNTRY, Tables.USER_SESSION, Tables.USER_PERMISSIONLEVEL, Tables.USER));
+        preparedStatementHashMap.put("getUser",String.format("SELECT * FROM %s WHERE `id` = ?", Tables.USER));
         preparedStatementHashMap.put("hasImageName",String.format("SELECT 0 FROM %s WHERE %s = ?", Tables.IMAGE,  Tables.IMAGE_NAME));
-
     }
 
     public synchronized static ServerStorage getInstance() {
@@ -83,10 +79,42 @@ public class ServerStorage {
                 strings[0] = rs.getString("login");
                 strings[1] = rs.getString("pass");
             }
+            preparedStatement.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return strings;
+    }
+
+
+    public User getUser(int id){
+        User user=null;
+        try {
+            PreparedStatement preparedStatement = Connector.getConnection().prepareStatement(preparedStatementHashMap.get("getUser"));
+            preparedStatement.setInt(1, id);
+            ResultSet rs = preparedStatement.executeQuery();
+            while (rs.next()){
+                 user = new User(rs.getString(Tables.USER_LOGIN),
+                        rs.getString(Tables.USER_FNAME),
+                        rs.getString(Tables.USER_LNAME),
+                        rs.getString(Tables.USER_NICK),
+                        rs.getString(Tables.USER_COUNTRY),
+                        rs.getString(Tables.USER_CITY),
+                        rs.getInt(Tables.USER_COUNT_PHOTO),
+                        rs.getString(Tables.USER_PROFILEPHOTO),
+                        rs.getString(Tables.USER_LASTONLINE),
+                        rs.getString(Tables.USER_EMAIL),
+                        rs.getString(Tables.USER_FRIENDS),
+                        rs.getString(Tables.USER_SESSION),
+                        rs.getInt(Tables.USER_AGE),
+                        rs.getInt("id"),
+                        rs.getInt(Tables.USER_RATING),
+                        rs.getInt(Tables.USER_LASTONLINE));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return user;
     }
 
     public synchronized void updateSessionKey(String sessionKey, int id){
@@ -95,6 +123,7 @@ public class ServerStorage {
             preparedStatement.setString(1, sessionKey);
             preparedStatement.setInt(2, id);
             preparedStatement.executeUpdate();
+            preparedStatement.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -102,34 +131,6 @@ public class ServerStorage {
 
     public synchronized void addImage(){
 //        SQLBuilder.getInstance().addInsertQuery(Tables.IMAGE, new String[]{Tables.IMAGE_NAME, })
-    }
-
-    /**
-     * @param id
-     * @return <pre>
-     *  {@code strings[0] = rs.getString(Tables.USER_NAME);
-     *  strings[1] = rs.getString(Tables.USER_PERMISSIONLEVEL);
-     *  strings[2] = rs.getString(Tables.USER_SESSION);
-     *  strings[3] = rs.getString(Tables.USER_COUNTRY);
-    }</pre>
-     */
-    public synchronized String[] getAuthUser(int id){
-
-        String[] strings = new String[4];
-        try {
-            PreparedStatement preparedStatement = Connector.getConnection().prepareStatement(preparedStatementHashMap.get("getAuthUser"));
-            preparedStatement.setInt(1, id);
-            ResultSet rs = preparedStatement.executeQuery();
-            while (rs.next()){
-                strings[0] = rs.getString(Tables.USER_NAME);
-                strings[1] = rs.getString(Tables.USER_PERMISSIONLEVEL);
-                strings[2] = rs.getString(Tables.USER_SESSION);
-                strings[3] = rs.getString(Tables.USER_COUNTRY);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return strings;
     }
 
     public synchronized boolean hasImageName(String name){
@@ -141,6 +142,7 @@ public class ServerStorage {
             while (rs.next()){
                 return rs.getInt(1) == 0;
             }
+            preparedStatement.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -155,28 +157,5 @@ public class ServerStorage {
             return str;
         }
         return generateString();
-    }
-
-    public synchronized void addUser(User user){
-        if (!storage.getUsers().containsKey(user.getId())){
-            storage.getUsers().put(user.getId(), user);
-        }
-    }
-
-    public synchronized boolean hasUser(int id){
-        if (storage.getUsers().containsKey(id)){
-            return true;
-        }else {
-            return false;
-        }
-    }
-
-    @Nullable
-    public synchronized User getUser(int id){
-        if (storage.getUsers().containsKey(id)){
-            return storage.getUsers().get(id);
-        }else{
-            return null;
-        }
     }
 }

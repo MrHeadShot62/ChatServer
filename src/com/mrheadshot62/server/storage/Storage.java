@@ -1,7 +1,7 @@
 package com.mrheadshot62.server.storage;
 
 import com.mrheadshot62.server.Client;
-import com.mrheadshot62.server.User;
+import com.mrheadshot62.api.types.User;
 
 import java.util.*;
 
@@ -18,7 +18,6 @@ class Storage {
     HashMap<Integer, Client> getMap(){
         return clients;
     }
-
     HashMap<Integer, User> getUsers() {
         return users;
     }
