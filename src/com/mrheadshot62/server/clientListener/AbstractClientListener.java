@@ -41,7 +41,7 @@ abstract class AbstractClientListener extends Thread{
 
 
     protected void onReceiveMultiPacket(MultiPacket p){
-        new MainHandler(p.getPackets()){
+        new MainHandler(p.getPackets(), client){
             @Override
             public void onReceivedAuthPacket(AuthPacket p) {
                 super.onReceivedAuthPacket(p);

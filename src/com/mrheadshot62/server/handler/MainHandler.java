@@ -4,17 +4,20 @@ import com.mrheadshot62.api.Packet;
 import com.mrheadshot62.api.PermissionLevel;
 import com.mrheadshot62.api.Types;
 import com.mrheadshot62.api.types.*;
+import com.mrheadshot62.server.Client;
 
 /**
  * Created by novak on 05.01.2017.
  */
 public class MainHandler {
+    private final Client client;
     private Packet[] packets;
     private PermissionPacket permission;
 
 
 
-    public MainHandler(Packet[] packets) {
+    public MainHandler(Packet[] packets, Client c) {
+        this.client = c;
         this.packets = packets;
         if (havePermissionPacket()){
             if (checkSession()) {
@@ -34,6 +37,14 @@ public class MainHandler {
                         case Types.Image:
                             if (checkPermissionLevel(this.permission, PermissionLevel.SENDIMAGE))
                             onReceivedImagePacket((ImagePacket)p.getData());
+                            break;
+                        case Types.AUTH_REGISTRATION:
+                            if (checkPermissionLevel(this.permission, PermissionLevel.GUEST)){
+                                new RegistrationHandler((AuthRegistrationPacket)p.getData(), permission.getId());
+                            }
+                            break;
+                        case Types.AUTH_READY_USER:
+                            System.out.println(((AuthReadyUser)p.getData()).getKey());
                             break;
                         case Types.USER:
                             if (checkPermissionLevel(this.permission, PermissionLevel.USER))
@@ -66,6 +77,8 @@ public class MainHandler {
             System.out.println("В пакете полученом от пользователя [] пустая сессия");
            return false;
         }else {
+            System.out.println(permission.getSessionKey());
+            client.setId(permission.getUserID());
             return true;
         }
     }

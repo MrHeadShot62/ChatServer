@@ -7,21 +7,19 @@ import java.io.Serializable;
  * Created by DmitriyRoot on 04.01.2017.
  */
 public class AuthPacket extends CorePacket implements Serializable {
-    private final String login;
-    private final String pass;
-
-    public AuthPacket(String login, String pass) {
+    private final byte type;
+    private final String[] strings;
+    public AuthPacket(byte type, String... arg) {
         super();
-        this.login = login;
-        this.pass = pass;
+        this.type = type;
+        this.strings = arg;
     }
 
-    public String getLogin() {
-        return login;
+    public byte getType() {
+        return type;
     }
 
-    public String getPass() {
-        return pass;
+    public String[] getArgs() {
+        return strings;
     }
-
 }

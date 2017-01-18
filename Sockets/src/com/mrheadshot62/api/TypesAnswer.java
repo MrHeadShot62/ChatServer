@@ -10,5 +10,7 @@ public class TypesAnswer {
     public static final int USERAUTHPACKET = 578;
     public static final int USERPACKET = 579;
     public static final int REPORTPACKET = 580;
+    public static final int SECOND_AUTH = 581;
+
 
 }

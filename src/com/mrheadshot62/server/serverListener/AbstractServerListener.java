@@ -12,9 +12,11 @@ import com.mrheadshot62.server.storage.ServerStorage;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Map;
 
 abstract class AbstractServerListener extends Thread{
     protected ServerStorage storage;
+    private boolean go=true;
 
     AbstractServerListener(ServerStorage storage){
         this.storage = storage;
@@ -30,20 +32,28 @@ abstract class AbstractServerListener extends Thread{
                     Socket socket = serverSocket.accept();
 
                     System.out.println(socket.getInetAddress().getHostAddress());
-                    Client client = new Client(socket, storage);
-                    onClientConnected(client);
-                    storage.addClient(client);
-
-                    AbstractServerListener abstractServerListener = this;
-                    ClientListener clientListener = new ClientListener(client){
-                        @Override
-                        protected void onClientDisconnected(Client client) {
-                            super.onClientDisconnected(client);
-                            abstractServerListener.onClientDisconnected(client);
+                    Client client = new Client(socket);
+                    for (Map.Entry<Integer, Client> m:storage.getClients()){
+                        if (m.getValue().getIp().equals(client.getIp())){
+                            storage.removeClient(m.getKey());
+                            go=false;
                         }
-                    };
-                    clientListener.start();
-                    onListenerAttached(clientListener);
+                    }
+                    if (go) {
+                        onClientConnected(client);
+                        storage.addClient(client);
+
+                        AbstractServerListener abstractServerListener = this;
+                        ClientListener clientListener = new ClientListener(client) {
+                            @Override
+                            protected void onClientDisconnected(Client client) {
+                                super.onClientDisconnected(client);
+                                abstractServerListener.onClientDisconnected(client);
+                            }
+                        };
+                        clientListener.start();
+                        onListenerAttached(clientListener);
+                    }
                 }catch (Exception e){
                     e.printStackTrace();
                 }

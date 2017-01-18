@@ -16,14 +16,13 @@ public class Client {
     private BlueBearInputStream input;
     private BlueBearOutputStream output;
     private String ip;
-    private int id;
+    private int id=0;
 
-    public Client(Socket socket, ServerStorage storage){
+    public Client(Socket socket){
         try {
             this.output = new BlueBearOutputStream(socket.getOutputStream());
             this.input = new BlueBearInputStream(socket.getInputStream());
             this.ip = socket.getInetAddress().getHostAddress();
-            this.id = storage.getClients().size();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -43,5 +42,9 @@ public class Client {
 
     public int getId() {
         return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }
