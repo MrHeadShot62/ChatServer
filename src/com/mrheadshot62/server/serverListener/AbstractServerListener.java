@@ -33,9 +33,9 @@ abstract class AbstractServerListener extends Thread{
 
                     System.out.println(socket.getInetAddress().getHostAddress());
                     Client client = new Client(socket);
-                    for (Map.Entry<Integer, Client> m:storage.getClients()){
+                    for (Map.Entry<String, Client> m:storage.getClients()){
                         if (m.getValue().getIp().equals(client.getIp())){
-                            storage.removeClient(m.getKey());
+                            storage.removeClient(Integer.valueOf(m.getKey()));
                             go=false;
                         }
                     }

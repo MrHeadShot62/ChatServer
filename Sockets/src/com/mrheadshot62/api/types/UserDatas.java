@@ -6,14 +6,14 @@ import java.sql.Timestamp;
 /**
  * Created by novak on 04.01.2017.
  */
-public class User implements Serializable{
+public class UserDatas implements Serializable{
     private String fname, lname, friends, login, nickname, photos, profilePhotos, email;
     private int id, permissionLvl, age, contry, city, rating, isUpdated, counPhoto, balance;
     private byte online;
     private Timestamp lastoOnline, registration, lastAuth;
 
 
-    public User(int id, String login, String fname, String lname, String friends,  String nickname, String photos, String profilePhotos, String email, int permissionLvl, int age, int contry, int city, int rating, int isUpdated, int counPhoto, int balance, byte online, Timestamp lastoOnline, Timestamp registration, Timestamp lastAuth) {
+    public UserDatas(int id, String login, String fname, String lname, String friends, String nickname, String photos, String profilePhotos, String email, int permissionLvl, int age, int contry, int city, int rating, int isUpdated, int counPhoto, int balance, byte online, Timestamp lastoOnline, Timestamp registration, Timestamp lastAuth) {
         this.fname = fname;
         this.lname = lname;
         this.friends = friends;

@@ -5,11 +5,11 @@ import java.io.Serializable;
 /**
  * Created by novak on 18.01.2017.
  */
-public class AuthRegistrationPacket extends CorePacket implements Serializable {
+public class AuthorisationPacket extends CorePacket implements Serializable {
     private final Object[] data;
     private final byte type;
 
-    public AuthRegistrationPacket(byte type, Object... data) {
+    public AuthorisationPacket(byte type, Object... data) {
         this.data = data;
         this.type = type;
     }

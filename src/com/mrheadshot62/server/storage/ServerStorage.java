@@ -1,7 +1,7 @@
 package com.mrheadshot62.server.storage;
 
+import com.mrheadshot62.api.types.UserDatas;
 import com.mrheadshot62.server.Client;
-import com.mrheadshot62.api.types.User;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -24,10 +24,22 @@ public class ServerStorage {
     static{
         preparedStatementHashMap.put("updateSessionKey",String.format("UPDATE %s SET `%s` = ? WHERE `id` = ?", Tables.USER, Tables.USER_SESSION));
         preparedStatementHashMap.put("getLoginAndPass",String.format("SELECT `%s`, `%s` FROM %s WHERE `id` = ?", Tables.USER_LOGIN, Tables.USER_PASS, Tables.USER));
-        preparedStatementHashMap.put("getUser",String.format("SELECT * FROM %s WHERE `id` = ?", Tables.USER));
-        preparedStatementHashMap.put("addUser",String.format("INSERT INTO %s(`%s`,`%s`,`%s`,`%s`,`%s`,`%s`,`%s`,`%s`,`%s`,`%s`,`%s`,`%s`,`%s`,`%s`,`%s`,`%s`,`%s`,`%s`,`%s`,`%s`) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?", Tables.USER, Tables.USER_LOGIN, Tables.USER_FNAME, Tables.USER_LNAME, Tables.USER_NICK, Tables.USER_AGE, Tables.USER_IS_UPDATED, Tables.USER_COUNTRY, Tables.USER_CITY, Tables.USER_RATING, Tables.USER_PHOTOS, Tables.USER_PROFILE_PHOTO, Tables.USER_LAST_ONLINE, Tables.USER_EMAIL, Tables.USER_FRIENDS, Tables.USER_PERMISSIONLVL, Tables.USER_COUNT_PHOTO, Tables.USER_BALANCE, Tables.USER_ONLINE, Tables.USER_REGISTRATION,Tables.USER_LAST_AUTH));
+        preparedStatementHashMap.put("getUserDatas",String.format("SELECT * FROM %s WHERE `id` = ?", Tables.USER));
+        preparedStatementHashMap.put("checkEmail",String.format("SELECT `id` FROM %s WHERE `email` = ?", Tables.USER));
+        preparedStatementHashMap.put("addUser",String.format("INSERT INTO %s(`%s`,`%s`,`%s`,`%s`,`%s`,`%s`,`%s`,`%s`,`%s`,`%s`,`%s`,`%s`,`%s`,`%s`,`%s`,`%s`,`%s`,`%s`,`%s`,`%s`) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", Tables.USER, Tables.USER_LOGIN, Tables.USER_FNAME, Tables.USER_LNAME, Tables.USER_NICK, Tables.USER_AGE, Tables.USER_IS_UPDATED, Tables.USER_COUNTRY, Tables.USER_CITY, Tables.USER_RATING, Tables.USER_PHOTOS, Tables.USER_PROFILE_PHOTO, Tables.USER_LAST_ONLINE, Tables.USER_EMAIL, Tables.USER_FRIENDS, Tables.USER_PERMISSIONLVL, Tables.USER_COUNT_PHOTO, Tables.USER_BALANCE, Tables.USER_ONLINE, Tables.USER_REGISTRATION,Tables.USER_LAST_AUTH));
         preparedStatementHashMap.put("hasImageName",String.format("SELECT 0 FROM %s WHERE %s = ?", Tables.IMAGE,  Tables.IMAGE_NAME));
         preparedStatementHashMap.put("updateUser", String.format("UPDATE %s SET `%s`=?,`%s`=?,`%s`=?,`%s`=?,`%s`=?,`%s`=?,`%s`=?,`%s`=?,`%s`=?,`%s`=?,`%s`=?,`%s`=?,`%s`=?,`%s`=?,`%s`=?,`%s`=?,`%s`=?,`%s`=?,`%s`=?,`%s`=? WHERE `id`=?", Tables.USER, Tables.USER_LOGIN, Tables.USER_FNAME, Tables.USER_LNAME, Tables.USER_NICK, Tables.USER_AGE, Tables.USER_IS_UPDATED, Tables.USER_COUNTRY, Tables.USER_CITY, Tables.USER_RATING, Tables.USER_PHOTOS, Tables.USER_PROFILE_PHOTO, Tables.USER_LAST_ONLINE, Tables.USER_EMAIL, Tables.USER_FRIENDS, Tables.USER_PERMISSIONLVL, Tables.USER_COUNT_PHOTO, Tables.USER_BALANCE, Tables.USER_ONLINE, Tables.USER_REGISTRATION,Tables.USER_LAST_AUTH));
+    }
+
+    public boolean checkEmail(String email){
+        try{
+            PreparedStatement preparedStatement = Connector.getConnection().prepareStatement(preparedStatementHashMap.get("getLoginAndPass"));
+            preparedStatement.setString(1, email);
+            return preparedStatement.execute();
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return false;
     }
 
     public synchronized static ServerStorage getInstance() {
@@ -39,11 +51,11 @@ public class ServerStorage {
         }
     }
 
-    public synchronized Set<Map.Entry<Integer,Client>> getClients(){
+    public synchronized Set<Map.Entry<String,Client>> getClients(){
         return storage.getClients();
     }
 
-    public synchronized Map<Integer, Client> getMap(){
+    public synchronized Map<String, Client> getMap(){
         return storage.getMap();
     }
 
@@ -56,8 +68,8 @@ public class ServerStorage {
     }
 
     public synchronized void removeClient(int id){
-        for (Map.Entry<Integer, Client> map:getClients()){
-            if (map.getValue().getId() == id){
+        for (Map.Entry<String, Client> map:getClients()){
+            if (map.getValue().getId().equals(String.valueOf(id))){
                 getClients().remove(map);
                 return;
             }
@@ -87,31 +99,30 @@ public class ServerStorage {
         return strings;
     }
 
-    public void updateUser(User u){
+    public void updateUser(UserDatas u){
         try {
             PreparedStatement preparedStatement = Connector.getConnection().prepareStatement(preparedStatementHashMap.get("updateUser"));
-            preparedStatement.setString(1, Tables.USER);
-            preparedStatement.setString(2, u.getLogin());
-            preparedStatement.setString(3, u.getFname());
-            preparedStatement.setString(4, u.getLname());
-            preparedStatement.setString(5, u.getNickname());
-            preparedStatement.setInt(6, u.getAge());
-            preparedStatement.setInt(7, u.getIsUpdated());
-            preparedStatement.setInt(8, u.getContry());
-            preparedStatement.setInt(9, u.getCity());
-            preparedStatement.setInt(10, u.getRating());
-            preparedStatement.setString(11, u.getPhotos());
-            preparedStatement.setString(12, u.getProfilePhotos());
-            preparedStatement.setTimestamp(13, u.getLastoOnline());
-            preparedStatement.setString(14, u.getEmail());
-            preparedStatement.setString(15, u.getFriends());
-            preparedStatement.setInt(16, u.getPermissionLvl());
-            preparedStatement.setInt(17, u.getCounPhoto());
-            preparedStatement.setInt(18, u.getBalance());
-            preparedStatement.setInt(19, (int)u.getOnline());
-            preparedStatement.setTimestamp(20, u.getRegistration());
-            preparedStatement.setTimestamp(21, u.getLastAuth());
-            preparedStatement.setInt(22, u.getId());
+            preparedStatement.setString(1, u.getLogin());
+            preparedStatement.setString(2, u.getFname());
+            preparedStatement.setString(3, u.getLname());
+            preparedStatement.setString(4, u.getNickname());
+            preparedStatement.setInt(5, u.getAge());
+            preparedStatement.setInt(6, u.getIsUpdated());
+            preparedStatement.setInt(7, u.getContry());
+            preparedStatement.setInt(8, u.getCity());
+            preparedStatement.setInt(9, u.getRating());
+            preparedStatement.setString(10, u.getPhotos());
+            preparedStatement.setString(11, u.getProfilePhotos());
+            preparedStatement.setTimestamp(12, u.getLastoOnline());
+            preparedStatement.setString(13, u.getEmail());
+            preparedStatement.setString(14, u.getFriends());
+            preparedStatement.setInt(15, u.getPermissionLvl());
+            preparedStatement.setInt(16, u.getCounPhoto());
+            preparedStatement.setInt(17, u.getBalance());
+            preparedStatement.setInt(18, (int)u.getOnline());
+            preparedStatement.setTimestamp(19, u.getRegistration());
+            preparedStatement.setTimestamp(20, u.getLastAuth());
+            preparedStatement.setInt(21, u.getId());
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -119,45 +130,84 @@ public class ServerStorage {
 
     }
 
-    public void addUser(User u){
+    public void addUser(UserDatas u){
         try {
             PreparedStatement preparedStatement = Connector.getConnection().prepareStatement(preparedStatementHashMap.get("addUser"));
-            preparedStatement.setString(1, Tables.USER);
-            preparedStatement.setString(2, u.getLogin());
-            preparedStatement.setString(3, u.getFname());
-            preparedStatement.setString(4, u.getLname());
-            preparedStatement.setString(5, u.getNickname());
-            preparedStatement.setInt(6, u.getAge());
-            preparedStatement.setInt(7, u.getIsUpdated());
-            preparedStatement.setInt(8, u.getContry());
-            preparedStatement.setInt(9, u.getCity());
-            preparedStatement.setInt(10, u.getRating());
-            preparedStatement.setString(11, u.getPhotos());
-            preparedStatement.setString(12, u.getProfilePhotos());
-            preparedStatement.setTimestamp(13, u.getLastoOnline());
-            preparedStatement.setString(14, u.getEmail());
-            preparedStatement.setString(15, u.getFriends());
-            preparedStatement.setInt(16, u.getPermissionLvl());
-            preparedStatement.setInt(17, u.getCounPhoto());
-            preparedStatement.setInt(18, u.getBalance());
-            preparedStatement.setInt(19, (int)u.getOnline());
-            preparedStatement.setTimestamp(20, u.getRegistration());
-            preparedStatement.setTimestamp(21, u.getLastAuth());
-            preparedStatement.setInt(22, u.getId());
+            preparedStatement.setString(1, u.getLogin());
+            preparedStatement.setString(2, u.getFname());
+            preparedStatement.setString(3, u.getLname());
+            preparedStatement.setString(4, u.getNickname());
+            preparedStatement.setInt(5, u.getAge());
+            preparedStatement.setInt(6, u.getIsUpdated());
+            preparedStatement.setInt(7, u.getContry());
+            preparedStatement.setInt(8, u.getCity());
+            preparedStatement.setInt(9, u.getRating());
+            preparedStatement.setString(10, u.getPhotos());
+            preparedStatement.setString(11, u.getProfilePhotos());
+            preparedStatement.setTimestamp(12, u.getLastoOnline());
+            preparedStatement.setString(13, u.getEmail());
+            preparedStatement.setString(14, u.getFriends());
+            preparedStatement.setInt(15, u.getPermissionLvl());
+            preparedStatement.setInt(16, u.getCounPhoto());
+            preparedStatement.setInt(17, u.getBalance());
+            preparedStatement.setInt(18, (int)u.getOnline());
+            preparedStatement.setTimestamp(19, u.getRegistration());
+            preparedStatement.setTimestamp(20, u.getLastAuth());
             preparedStatement.execute();
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-    public User getUser(int id){
-        User user=null;
+    public int addGoogleUser(String email){
         try {
-            PreparedStatement preparedStatement = Connector.getConnection().prepareStatement(preparedStatementHashMap.get("getUser"));
+            PreparedStatement preparedStatement = Connector.getConnection().prepareStatement(preparedStatementHashMap.get("addUser"));
+            preparedStatement.setString(1, "2");
+            preparedStatement.setString(2, "2");
+            preparedStatement.setString(3, "2");
+            preparedStatement.setString(4, "2");
+            preparedStatement.setInt(5, 0);
+            preparedStatement.setInt(6, 0);
+            preparedStatement.setInt(7, 0);
+            preparedStatement.setInt(8, 0);
+            preparedStatement.setInt(9, 0);
+            preparedStatement.setString(10, "");
+            preparedStatement.setString(11, "");
+            preparedStatement.setTimestamp(12, null);
+            preparedStatement.setString(13, email);
+            preparedStatement.setString(14,"");
+            preparedStatement.setInt(15, 0);
+            preparedStatement.setInt(16, 0);
+            preparedStatement.setInt(17, 0);
+            preparedStatement.setInt(18, 0);
+            preparedStatement.setTimestamp(19, null);
+            preparedStatement.setTimestamp(20, null);
+            preparedStatement.execute();
+
+            PreparedStatement preparedStatement2 = Connector.getConnection().prepareStatement(preparedStatementHashMap.get("checkEmail"));
+            preparedStatement2.setString(1, email);
+            ResultSet rs2 = preparedStatement2.executeQuery();
+            try {
+                while (rs2.next()) {
+                    return rs2.getInt("id");
+                }
+            }catch (Exception e){
+                return -1;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    public UserDatas getUser(int id){
+        UserDatas userDatas =null;
+        try {
+            PreparedStatement preparedStatement = Connector.getConnection().prepareStatement(preparedStatementHashMap.get("getUserDatas"));
             preparedStatement.setInt(1, id);
             ResultSet rs = preparedStatement.executeQuery();
             while (rs.next()){
-                 user = new User(rs.getInt("id"),
+                 userDatas = new UserDatas(rs.getInt("id"),
                          rs.getString(Tables.USER_LOGIN),
                          rs.getString(Tables.USER_FNAME),
                          rs.getString(Tables.USER_LNAME),
@@ -182,7 +232,7 @@ public class ServerStorage {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return user;
+        return userDatas;
     }
 
     public synchronized void updateSessionKey(String sessionKey, int id){

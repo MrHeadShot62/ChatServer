@@ -48,11 +48,12 @@ public class ServerListener extends AbstractServerListener {
     @Override
     protected void onClientConnected(Client c) {
         System.out.printf("Client #%d connected!%n", c.getId());
+
     }
 
     @Override
     protected void onClientDisconnected(Client c) {
         System.out.printf("Client #%d disconnected!%n", c.getId());
-        storage.removeClient(c.getId());
+        storage.removeClient(Integer.valueOf(c.getId()));
     }
 }

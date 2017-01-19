@@ -6,7 +6,7 @@ import com.mrheadshot62.api.MultiPacket;
 
 import com.mrheadshot62.api.types.answer.ServerAnswerAuthUserPacket;
 import com.mrheadshot62.api.types.answer.ServerAnswerPacket;
-import com.mrheadshot62.api.types.answer.ServerAnswerSecondAuth;
+import com.mrheadshot62.api.types.answer.ServerAnswerCheckSecretKeyAuth;
 import com.mrheadshot62.api.types.answer.ServerAnswerUserPacket;
 
 import com.mrheadshot62.server.serverListener.ServerListener;
@@ -32,7 +32,7 @@ public class PacketManager{
 //    }
 
     public synchronized static void packetGenerator(ServerAnswerAuthUserPacket serverAnswerAuthPacket, int id) {
-        sendPackets(new MultiPacket(new Packet(serverAnswerAuthPacket, TypesAnswer.USERAUTHPACKET)), id);
+        sendPackets(new MultiPacket(new Packet(serverAnswerAuthPacket, TypesAnswer.AUTH_USER_FROM_SERVER)), id);
     }
     public synchronized static void packetGenerator(ServerAnswerPacket serverAnswerPacket, int id) {
         sendPackets(new MultiPacket(new Packet(serverAnswerPacket, TypesAnswer.ONLYCODE)), id);
@@ -43,8 +43,8 @@ public class PacketManager{
     public synchronized static void generateAnswer(int code, int id){
         sendPackets(new MultiPacket(new Packet(new ServerAnswerPacket(code), TypesAnswer.ONLYCODE)), id);
     }
-    public synchronized static void generateSAuth(boolean b, int id){
-        sendPackets(new MultiPacket(new Packet(new ServerAnswerSecondAuth(id, b), TypesAnswer.SECOND_AUTH)), id);
+    public synchronized static void generateCheckSecretKey(boolean isRegistration, int id){
+        sendPackets(new MultiPacket(new Packet(new ServerAnswerCheckSecretKeyAuth(id, isRegistration), TypesAnswer.AUTH_CHECK_SECRET_KEY)), id);
     }
     private synchronized static int sendPackets(MultiPacket multiPacket, int id) {
         ServerListener.sendPacket(multiPacket, id);

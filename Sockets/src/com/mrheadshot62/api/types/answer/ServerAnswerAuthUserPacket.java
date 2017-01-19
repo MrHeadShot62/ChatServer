@@ -1,6 +1,6 @@
 package com.mrheadshot62.api.types.answer;
 
-import com.mrheadshot62.api.types.User;
+import com.mrheadshot62.api.types.UserDatas;
 
 import java.io.Serializable;
 
@@ -8,16 +8,16 @@ import java.io.Serializable;
  * Created by novak on 13.01.2017.
  */
 public class ServerAnswerAuthUserPacket implements Serializable{
-    private final User user;
+    private final UserDatas userDatas;
     private final String session;
 
-    public ServerAnswerAuthUserPacket(String session, User user) {
+    public ServerAnswerAuthUserPacket(String session, UserDatas userDatas) {
         this.session = session;
-        this.user = user;
+        this.userDatas = userDatas;
     }
 
-    public User getUser() {
-        return user;
+    public UserDatas getUserDatas() {
+        return userDatas;
     }
 
     public String getSession() {
